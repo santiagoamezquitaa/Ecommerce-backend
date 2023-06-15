@@ -1,0 +1,76 @@
+import { Router } from "express";
+import { ProductManager } from "../classes/productManager.js";
+
+const router = Router();
+
+const productManager = new ProductManager("./src/files/products.json");
+
+router.get("/", async (req, res) => {
+  try {
+    const products = await productManager.getProducts();
+    const limit = Number(req.query.limit);
+    if (!limit) {
+      return res.status(200).send(products);
+    } else {
+      return res.status(200).send(products.slice(0, limit));
+    }
+  } catch (error) {
+    return res.status(500).send({ status: "error", error: error.message });
+  }
+});
+
+router.get("/:pid", async (req, res) => {
+  try {
+    const productId = Number(req.params.pid);
+    const product = await productManager.getProductById(productId);
+    return res.status(200).send(product);
+  } catch (error) {
+    return res.status(400).send({ status: "error", error: error.message });
+  }
+});
+
+router.post("/", async (req, res) => {
+  try {
+    const product = req.body;
+    const addProductResponse = await productManager.addProduct(product);
+    return res
+      .status(200)
+      .send({ status: "success", message: addProductResponse });
+  } catch (error) {
+    return res.status(400).send({ status: "error", error: error.message });
+  }
+});
+
+router.put("/:pid", async (req, res) => {
+  try {
+    const productId = Number(req.params.pid);
+    const productToUpdate = req.body;
+
+    const updatedProductResponse = await productManager.updateProduct(
+      productId,
+      productToUpdate
+    );
+
+    return res
+      .status(200)
+      .send({ status: "success", message: updatedProductResponse });
+  } catch (error) {
+    return res.status(500).send({ status: "error", error: error.message });
+  }
+});
+
+router.delete("/:pid", async (req, res) => {
+  try {
+    const productId = Number(req.params.pid);
+
+    const deleteProductResponse = await productManager.deleteProduct(productId);
+
+    return res
+      .status(200)
+      .send({ status: "success", message: deleteProductResponse });
+  } catch (error) {
+    return res.status(500).send({ status: "error", error: error.message });
+  }
+});
+
+export default router;

@@ -2,9 +2,7 @@ import fs from "fs";
 
 export class ProductManager {
   fs = fs;
-  notFoundMessage = {
-    error: "El producto no existe",
-  };
+  notFoundMessage = "El producto no existe";
 
   constructor(path) {
     this.path = path;
@@ -16,26 +14,34 @@ export class ProductManager {
       !product.title ||
       !product.description ||
       !product.price ||
-      !product.thumbnail ||
+      !product.category ||
       !product.code ||
-      !product.stock
+      !product.stock ||
+      !product.status
     ) {
       throw new Error("Faltan campos en el producto, todos son obligatorios");
-    } else if (products.find((element) => element.code === product.code)) {
+    }
+
+    if (products.find((element) => element.code === product.code)) {
       throw new Error(
-        `El código ${product.code} ya existe en la lista de productos. Intentalo con un nuevo código`
+        `El código proporcionado ya existe en la lista de productos.`
       );
-    } else {
-      const lastProductId =
-        products.length > 0 ? products[products.length - 1].id : 0;
-      product.id = parseInt(lastProductId) + 1;
-      products.push(product);
-      try {
-        await this.fs.promises.writeFile(this.path, JSON.stringify(products));
-        return `El producto llamado "${product.title}" con codigo "${product.code}" fue agregado exitosamente.`;
-      } catch (error) {
-        throw new Error(`Error al guardar la información ${error}`);
-      }
+    }
+
+    if (!product.thumbnails) {
+      product.thumbnails = [];
+    }
+
+    const lastProductId =
+      products.length > 0 ? products[products.length - 1].id : 0;
+    product.status = true;
+    product.id = parseInt(lastProductId) + 1;
+    products.push(product);
+    try {
+      await this.fs.promises.writeFile(this.path, JSON.stringify(products));
+      return `Producto agregado correctamente`;
+    } catch (error) {
+      throw new Error("Error al guardar la información.");
     }
   }
 
@@ -44,77 +50,62 @@ export class ProductManager {
       const content = await this.fs.promises.readFile(this.path, "utf-8");
       return content ? JSON.parse(content) : [];
     } catch (error) {
-      throw new Error(
-        "Error al leer el archivo que contiene los productos:",
-        error
-      );
+      throw new Error("Error al leer el archivo que contiene los productos.");
     }
   }
 
   async getProductById(productId) {
-    try {
-      const content = await this.getProducts();
-      const productFound = content.find((element) => element.id === productId);
-      if (productFound) {
-        return productFound;
-      } else {
-        return this.notFoundMessage;
-      }
-    } catch (error) {
-      throw new Error(
-        "Error al leer el archivo que contiene los productos:",
-        error
-      );
+    const content = await this.getProducts();
+    const productFound = content.find((element) => element.id === productId);
+    if (productFound) {
+      return productFound;
+    } else {
+      throw new Error(this.notFoundMessage);
     }
   }
 
   async updateProduct(productId, fieldsUpdate) {
-    try {
-      const products = await this.getProducts();
-      const indexProductUpdate = products.findIndex(
-        (element) => element.id === productId
-      );
+    const products = await this.getProducts();
+    const indexProductUpdate = products.findIndex(
+      (element) => element.id === productId
+    );
 
-      if (indexProductUpdate !== -1) {
-        products[indexProductUpdate] = {
-          ...products[indexProductUpdate],
-          ...fieldsUpdate,
-        };
-        await this.fs.promises.writeFile(this.path, JSON.stringify(products));
-        return (
-          `Producto "${productId}" ha sido actualizado satisfactoriamente`,
-          products[indexProductUpdate]
-        );
-      } else {
-        return this.notFoundMessage;
-      }
-    } catch (error) {
-      throw new Error(
-        "Error al leer el archivo que contiene los productos:",
-        error
-      );
+    if (indexProductUpdate === -1) {
+      throw new Error(this.notFoundMessage);
     }
+
+    if ("id" in fieldsUpdate) {
+      throw new Error("El id no puede ser actualizado.");
+    }
+
+    if (
+      "code" in fieldsUpdate &&
+      products.some((element) => element.code === fieldsUpdate.code)
+    ) {
+      throw new Error("El código proporcionado ya existe");
+    }
+
+    products[indexProductUpdate] = {
+      ...products[indexProductUpdate],
+      ...fieldsUpdate,
+    };
+
+    await this.fs.promises.writeFile(this.path, JSON.stringify(products));
+    return "Producto actualizado satisfactoriamente";
   }
 
   async deleteProduct(productId) {
-    try {
-      const products = await this.getProducts();
-      const indexProductDelete = products.findIndex(
-        (element) => element.id === productId
-      );
+    const products = await this.getProducts();
+    const indexProductDelete = products.findIndex(
+      (element) => element.id === productId
+    );
 
-      if (indexProductDelete !== -1) {
-        products.splice(indexProductDelete, 1);
-        await this.fs.promises.writeFile(this.path, JSON.stringify(products));
-        return `Producto "${productId}" ha sido eliminado satisfactoriamente`;
-      } else {
-        return this.notFoundMessage;
-      }
-    } catch (error) {
-      throw new Error(
-        "Error al leer el archivo que contiene los productos:",
-        error
-      );
+    if (indexProductDelete !== -1) {
+      products.splice(indexProductDelete, 1);
+      await this.fs.promises.writeFile(this.path, JSON.stringify(products));
+      return `Producto eliminado satisfactoriamente`;
+    } else {
+      throw new Error(this.notFoundMessage);
     }
   }
 }
