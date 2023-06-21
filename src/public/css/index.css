@@ -1,0 +1,18 @@
+h1 {
+    margin-left: 1.5%;
+}
+
+.productsList {
+    background-color: #E1ECC8;
+    padding: 1.5%;
+    width: fit-content;
+    margin-left: 3%;
+    border-radius: 1.1rem;
+    border-color: #116A7B;
+    border-width: 3px;
+    border-style: solid;
+}
+
+P {
+    font-size: 1.1rem;
+}

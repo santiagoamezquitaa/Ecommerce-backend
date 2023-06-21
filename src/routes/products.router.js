@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { ProductManager } from "../classes/productManager.js";
+import socketServer from "../app.js";
 
 const router = Router();
 
@@ -33,9 +34,10 @@ router.post("/", async (req, res) => {
   try {
     const product = req.body;
     const addProductResponse = await productManager.addProduct(product);
+    socketServer.emit("productAdded", addProductResponse[1]);
     return res
       .status(200)
-      .send({ status: "success", message: addProductResponse });
+      .send({ status: "success", message: addProductResponse[0] });
   } catch (error) {
     return res.status(400).send({ status: "error", error: error.message });
   }
@@ -64,10 +66,10 @@ router.delete("/:pid", async (req, res) => {
     const productId = Number(req.params.pid);
 
     const deleteProductResponse = await productManager.deleteProduct(productId);
-
+    socketServer.emit("productDeleted", deleteProductResponse[1]);
     return res
       .status(200)
-      .send({ status: "success", message: deleteProductResponse });
+      .send({ status: "success", message: deleteProductResponse[0] });
   } catch (error) {
     return res.status(500).send({ status: "error", error: error.message });
   }

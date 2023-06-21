@@ -39,7 +39,7 @@ export class ProductManager {
     products.push(product);
     try {
       await this.fs.promises.writeFile(this.path, JSON.stringify(products));
-      return `Producto agregado correctamente`;
+      return [`Producto agregado correctamente`, product];
     } catch (error) {
       throw new Error("Error al guardar la información.");
     }
@@ -103,7 +103,7 @@ export class ProductManager {
     if (indexProductDelete !== -1) {
       products.splice(indexProductDelete, 1);
       await this.fs.promises.writeFile(this.path, JSON.stringify(products));
-      return `Producto eliminado satisfactoriamente`;
+      return [`Producto eliminado satisfactoriamente`, productId];
     } else {
       throw new Error(this.notFoundMessage);
     }

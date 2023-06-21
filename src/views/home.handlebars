@@ -1,0 +1,29 @@
+<h2>BIENVENIDO, LISTA DE PRODUCTOS ACTUALES:</h2>
+
+{{#each products}}
+<div class="productsList">
+    <p>
+        <strong>Nombre: </strong>{{title}}
+    </p>
+    <p>
+        <strong>Descripción: </strong>{{description}}
+    </p>
+    <p>
+        <strong>Precio: </strong>{{price}}
+    </p>
+    <p>
+        <strong>Categoría: </strong>{{category}}
+    </p>
+    <p>
+        <strong>Código: </strong>{{code}}
+    </p>
+    <p>
+        <strong>Existencias: </strong>{{stock}}
+    </p>
+    <p>
+        <strong>Id del producto: </strong>{{id}}
+    </p>
+</div>
+<br>
+
+{{/each}}
