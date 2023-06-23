@@ -1,8 +1,8 @@
 import express from "express";
-import { ProductManager } from "../classes/productManager.js";
+import { ProductManager } from "../dao/dataBaseManager/productManager.js";
 
 const router = express.Router();
-const productManager = new ProductManager("./src/files/products.json");
+const productManager = new ProductManager();
 
 router.get("/", async (req, res) => {
   const products = await productManager.getProducts();
@@ -23,6 +23,10 @@ router.get("/realtimeproducts", async (req, res) => {
     style: "index.css",
     title: "RealTImeProducts",
   });
+});
+
+router.get("/chat", async (req, res) => {
+  res.render("chat", {});
 });
 
 export default router;

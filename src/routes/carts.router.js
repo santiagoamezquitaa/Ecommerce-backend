@@ -1,13 +1,22 @@
 import { Router } from "express";
-import { CartManager } from "../classes/cartManager.js";
+import { CartManager } from "../dao/dataBaseManager/cartManager.js";
 
 const router = Router();
 
-const cartManager = new CartManager("./src/files/carts.json");
+const cartManager = new CartManager();
+
+router.get("/", async (req, res) => {
+  try {
+    const carts = await cartManager.getCarts();
+    return res.status(200).send(carts);
+  } catch (error) {
+    return res.status(200).send({ status: "error", error: error.message });
+  }
+});
 
 router.get("/:cid", async (req, res) => {
   try {
-    const cartId = Number(req.params.cid);
+    const cartId = req.params.cid;
     const productsFromCart = await cartManager.getProductsFromCart(cartId);
     return res.status(200).send(productsFromCart);
   } catch (error) {
@@ -28,12 +37,12 @@ router.post("/", async (req, res) => {
 
 router.post("/:cid/product/:pid", async (req, res) => {
   try {
-    const cartId = Number(req.params.cid);
-    const productId = Number(req.params.pid);
+    const cartId = req.params.cid;
+    const productId = req.params.pid;
 
     const addProductToCartResponse = await cartManager.addProductToCart(
       cartId,
-      { id: productId }
+      productId
     );
 
     return res

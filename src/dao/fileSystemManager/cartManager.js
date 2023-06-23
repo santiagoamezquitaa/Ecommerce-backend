@@ -2,10 +2,9 @@ import fs from "fs";
 
 export class CartManager {
   fs = fs;
+  path = "./src/files/carts.json";
 
-  constructor(path) {
-    this.path = path;
-  }
+  constructor() {}
 
   async getCarts() {
     try {
@@ -18,7 +17,7 @@ export class CartManager {
 
   async getProductsFromCart(cartId) {
     const content = await this.getCarts();
-    const cartFound = content.find((element) => element.id === cartId);
+    const cartFound = content.find((element) => element.id === Number(cartId));
     if (cartFound) {
       return cartFound.products;
     } else {
@@ -41,32 +40,29 @@ export class CartManager {
     }
   }
 
-  async addProductToCart(cartId, product) {
+  async addProductToCart(cartId, productId) {
     const carts = await this.getCarts();
     const indexCartToAddProduct = carts.findIndex(
-      (element) => element.id === cartId
+      (element) => element.id === Number(cartId)
     );
 
     if (indexCartToAddProduct === -1) {
       throw new Error("El carrito no existe.");
     }
 
-    if (!product.id) {
-      throw new Error("Falta el id del producto a agregar, es obligatorio.");
-    }
-
     const indexProductInCart = carts[indexCartToAddProduct].products.findIndex(
-      (element) => element.id === product.id
+      (element) => element.id === Number(productId)
     );
-
-    console.log(indexCartToAddProduct);
 
     if (indexProductInCart !== -1) {
       carts[indexCartToAddProduct].products[indexProductInCart].quantity++;
       await this.fs.promises.writeFile(this.path, JSON.stringify(carts));
       return "Producto ya existente, se ha sumado una unidad más.";
     } else {
-      product.quantity = 1;
+      const product = {
+        id: Number(productId),
+        quantity: 1,
+      };
       carts[indexCartToAddProduct].products.push(product);
       await this.fs.promises.writeFile(this.path, JSON.stringify(carts));
       return "Producto agregado en el carrito satisfactoriamente";

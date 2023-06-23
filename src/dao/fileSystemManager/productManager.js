@@ -3,10 +3,9 @@ import fs from "fs";
 export class ProductManager {
   fs = fs;
   notFoundMessage = "El producto no existe";
+  path = "./src/files/products.json";
 
-  constructor(path) {
-    this.path = path;
-  }
+  constructor() {}
 
   async addProduct(product) {
     const products = await this.getProducts();
@@ -56,7 +55,9 @@ export class ProductManager {
 
   async getProductById(productId) {
     const content = await this.getProducts();
-    const productFound = content.find((element) => element.id === productId);
+    const productFound = content.find(
+      (element) => element.id === Number(productId)
+    );
     if (productFound) {
       return productFound;
     } else {
@@ -67,7 +68,7 @@ export class ProductManager {
   async updateProduct(productId, fieldsUpdate) {
     const products = await this.getProducts();
     const indexProductUpdate = products.findIndex(
-      (element) => element.id === productId
+      (element) => element.id === Number(productId)
     );
 
     if (indexProductUpdate === -1) {
@@ -97,7 +98,7 @@ export class ProductManager {
   async deleteProduct(productId) {
     const products = await this.getProducts();
     const indexProductDelete = products.findIndex(
-      (element) => element.id === productId
+      (element) => element.id === Number(productId)
     );
 
     if (indexProductDelete !== -1) {

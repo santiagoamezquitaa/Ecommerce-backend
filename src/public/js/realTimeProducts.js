@@ -4,7 +4,7 @@ socket.on("productAdded", (newProduct) => {
   const container = document.getElementById("container");
   const div = document.createElement("div");
   div.className = "productsList";
-  div.setAttribute("data-id", `${newProduct.id}`);
+  div.setAttribute("data-id", `${newProduct._id}`);
 
   const propiedades = [
     "Nombre",
@@ -22,7 +22,7 @@ socket.on("productAdded", (newProduct) => {
     newProduct.category,
     newProduct.code,
     newProduct.stock,
-    newProduct.id,
+    newProduct._id,
   ];
 
   propiedades.forEach((propiedad, index) => {
@@ -39,7 +39,6 @@ socket.on("productAdded", (newProduct) => {
 });
 
 socket.on("productDeleted", (idProductDelete) => {
-  console.log(idProductDelete);
   const container = document.getElementById("container");
   const productsList = container.getElementsByClassName("productsList");
 
@@ -103,5 +102,5 @@ document
       method: "DELETE",
     });
 
-    document.getElementById("formAddProduct").reset();
+    document.getElementById("formDeleteProduct").reset();
   });

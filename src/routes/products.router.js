@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { ProductManager } from "../classes/productManager.js";
+import { ProductManager } from "../dao/dataBaseManager/productManager.js";
 import socketServer from "../app.js";
 
 const router = Router();
 
-const productManager = new ProductManager("./src/files/products.json");
+const productManager = new ProductManager();
 
 router.get("/", async (req, res) => {
   try {
@@ -22,7 +22,7 @@ router.get("/", async (req, res) => {
 
 router.get("/:pid", async (req, res) => {
   try {
-    const productId = Number(req.params.pid);
+    const productId = req.params.pid;
     const product = await productManager.getProductById(productId);
     return res.status(200).send(product);
   } catch (error) {
@@ -45,7 +45,7 @@ router.post("/", async (req, res) => {
 
 router.put("/:pid", async (req, res) => {
   try {
-    const productId = Number(req.params.pid);
+    const productId = req.params.pid;
     const productToUpdate = req.body;
 
     const updatedProductResponse = await productManager.updateProduct(
@@ -63,7 +63,7 @@ router.put("/:pid", async (req, res) => {
 
 router.delete("/:pid", async (req, res) => {
   try {
-    const productId = Number(req.params.pid);
+    const productId = req.params.pid;
 
     const deleteProductResponse = await productManager.deleteProduct(productId);
     socketServer.emit("productDeleted", deleteProductResponse[1]);

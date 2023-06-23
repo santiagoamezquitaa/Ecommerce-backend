@@ -35,7 +35,7 @@
 
 <form id="formDeleteProduct">
     <label for="idDelete">Id del producto a eliminar:</label>
-    <input type="number" , id="idDelete" , name="idDelete"><br>
+    <input type="text" , id="idDelete" , name="idDelete"><br>
 
     <input type="submit" value="Eliminar producto">
 </form>
@@ -46,7 +46,7 @@
 
 <div id="container">
     {{#each products}}
-    <div class="productsList" data-id="{{id}}">
+    <div class="productsList" data-id="{{_id}}">
         <p>
             <strong>Nombre: </strong>{{title}}
         </p>
@@ -66,7 +66,7 @@
             <strong>Existencias: </strong>{{stock}}
         </p>
         <p>
-            <strong>Id del producto: </strong>{{id}}
+            <strong>Id del producto: </strong>{{_id}}
         </p>
     </div>
     <br>
