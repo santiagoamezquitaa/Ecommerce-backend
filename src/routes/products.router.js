@@ -8,13 +8,42 @@ const productManager = new ProductManager();
 
 router.get("/", async (req, res) => {
   try {
-    const products = await productManager.getProducts();
-    const limit = Number(req.query.limit);
-    if (!limit) {
-      return res.status(200).send(products);
-    } else {
-      return res.status(200).send(products.slice(0, limit));
+    const limit = parseInt(req.query.limit) || 10;
+    const page = parseInt(req.query.page) || 1;
+    const sort = req.query.sort || null;
+    const query = req.query.query;
+
+    const filter = {};
+
+    if (query) {
+      filter.$or = [{ category: query }, { status: query }];
     }
+
+    const products = await productManager.getProducts(
+      limit,
+      page,
+      sort,
+      filter
+    );
+
+    return res.status(200).send({
+      status: "success",
+      payload: products.docs,
+      totalPages: products.totalPages,
+      prevPage: products.prevPage,
+      nextPage: products.nextPage,
+      page: products.page,
+      hasPrevPage: products.hasPrevPage,
+      hasNextPage: products.hasNextPage,
+      prevLink:
+        products.prevPage === null
+          ? null
+          : `http://localhost:8080/api/products?page=${products.page - 1}`,
+      nextLink:
+        products.nextPage === null
+          ? null
+          : `http://localhost:8080/api/products?page=${products.page + 1}`,
+    });
   } catch (error) {
     return res.status(500).send({ status: "error", error: error.message });
   }

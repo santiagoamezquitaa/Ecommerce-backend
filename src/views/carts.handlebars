@@ -1,0 +1,29 @@
+<h1>TU CARRITO: :D!</h1>
+
+<h3>Id del carrito actual: {{cartId}}</h3>
+<hr>
+
+{{#if carts.length}}
+<div>
+    {{#each carts}}
+    <div>
+        <h3>Producto: {{product.title}}</h3>
+        <div>
+            <p><strong>Id de producto:</strong>{{product._id}}</p>
+            <p><strong>Precio:</strong>{{product.price}}</p>
+            <p><strong>Categoria:</strong>{{product.category}}</p>
+            <p><strong>Código de producto:</strong>{{product.code}}</p>
+        </div>
+        <h3>Cantidad agregada: {{quantity}} unidades</h3>
+    </div>
+    <br>
+    <hr>
+    {{/each}}
+</div>
+{{else}}
+<div>
+    <h2>El carrito actual no tiene productos D:</h2>
+</div>
+{{/if}}
+
+<script src="/js/carts.js"></script>

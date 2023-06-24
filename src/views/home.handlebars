@@ -1,5 +1,6 @@
 <h2>BIENVENIDO, LISTA DE PRODUCTOS ACTUALES:</h2>
 
+{{#if products.length}}
 {{#each products}}
 <div class="productsList">
     <p>
@@ -25,5 +26,9 @@
     </p>
 </div>
 <br>
-
 {{/each}}
+{{else}}
+<div>
+    <h2>Actualmente no hay más productos D:</h2>
+</div>
+{{/if}}

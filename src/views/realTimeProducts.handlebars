@@ -44,6 +44,7 @@
 <hr>
 <br>
 
+{{#if products.length}}
 <div id="container">
     {{#each products}}
     <div class="productsList" data-id="{{_id}}">
@@ -72,6 +73,11 @@
     <br>
     {{/each}}
 </div>
+{{else}}
+<div>
+    <h2>Actualmente no hay más productos D:</h2>
+</div>
+{{/if}}
 
 
 

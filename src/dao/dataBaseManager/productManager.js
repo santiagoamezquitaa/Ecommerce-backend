@@ -5,10 +5,32 @@ export class ProductManager {
 
   constructor() {}
 
-  async getProducts() {
+  async getProducts(limit, page, sort, filter) {
     try {
-      const products = await productModel.find().lean();
-      return products;
+      if (sort === null) {
+        const options = {
+          limit: limit,
+          page: page,
+          sort: { sort },
+        };
+        return await productModel.paginate(filter, options);
+      } else if (sort === "desc") {
+        const options = {
+          limit: limit,
+          page: page,
+          sort: { price: -1 },
+        };
+        return await productModel.paginate(filter, options);
+      } else if (sort === "asc") {
+        const options = {
+          limit: limit,
+          page: page,
+          sort: { price: 1 },
+        };
+        return await productModel.paginate(filter, options);
+      } else {
+        throw new Error("Opción de ordenamiento no compatible.");
+      }
     } catch (error) {
       throw new Error(error);
     }

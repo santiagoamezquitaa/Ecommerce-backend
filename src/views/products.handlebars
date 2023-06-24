@@ -1,0 +1,52 @@
+<h1>NUESTROS PRODUCTOS! :D</h1>
+
+<br>
+<h2>Página actual: {{actualPage}}</h2>
+<br>
+
+<div>
+    <button id="prevPageButton">Página anterior</button>
+    <button id="nextPageButton">Página siguiente</button>
+</div>
+<br>
+
+{{#if products.length}}
+<div id="container">
+    {{#each products}}
+    <div class="productsList" data-id="{{_id}}">
+        <h2>Producto número: {{@index}}</h2>
+        <p>
+            <strong>Nombre: </strong>{{title}}
+        </p>
+        <p>
+            <strong>Descripción: </strong>{{description}}
+        </p>
+        <p>
+            <strong>Precio: </strong>{{price}}
+        </p>
+        <p>
+            <strong>Categoría: </strong>{{category}}
+        </p>
+        <p>
+            <strong>Código: </strong>{{code}}
+        </p>
+        <p>
+            <strong>Existencias: </strong>{{stock}}
+        </p>
+        <p>
+            <strong>Id del producto: </strong>{{_id}}
+        </p>
+        <br>
+        <button class="addToCartButton">Agregar al carrito!</button>
+    </div>
+    <br>
+    {{/each}}
+</div>
+{{else}}
+<div>
+    <h2>Actualmente no hay más productos D:</h2>
+</div>
+{{/if}}
+
+<script src="/js/products.js" data-actualPage="{{actualPage}}" data-hasPrevPage={{hasPrevPage}}
+    data-hasNextPage={{hasNextPage}}></script>
