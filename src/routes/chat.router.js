@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { ChatManager } from "../dao/dataBaseManager/chatManager.js";
-import socketServer from "../app.js";
 
 const router = Router();
 

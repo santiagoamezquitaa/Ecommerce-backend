@@ -41,3 +41,7 @@ addToCartButton.forEach((button) => {
     );
   });
 });
+
+document.getElementById("logout").addEventListener("click", () => {
+  window.location.replace("/logout");
+});

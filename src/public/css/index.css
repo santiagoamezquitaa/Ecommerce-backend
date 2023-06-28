@@ -16,3 +16,10 @@ h1 {
 P {
     font-size: 1.1rem;
 }
+
+.personalData {
+    padding-left: 1.5%;
+    border-color: #116A7B;
+    border-width: 1px;
+    border-style: solid;
+}
