@@ -1,3 +1,4 @@
+import { isValidPassword } from "../../utils.js";
 import { userModel } from "../models/user.model.js";
 
 export class UserManager {
@@ -15,10 +16,20 @@ export class UserManager {
   async createSession(user) {
     try {
       const { email, password } = user;
-      const userLoginValidate = await userModel.findOne({ email, password });
-      if (!userLoginValidate) {
-        throw new Error("error");
+      if (!email || !password) {
+        throw new Error("Faltan campos a ingresar");
       }
+      const userLoginValidate = await userModel.findOne(
+        { email: email },
+        { email: 1, firstName: 1, lastName: 1, age: 1, password: 1 }
+      );
+      if (!userLoginValidate) {
+        throw new Error("Usuario no encontrado");
+      }
+      if (isValidPassword(userLoginValidate, password)) {
+        throw new Error("Contraseña incorrecta");
+      }
+      delete userLoginValidate.password;
       return userLoginValidate;
     } catch (error) {
       throw new Error(error);
