@@ -29,7 +29,7 @@ router.post("/", async (req, res) => {
     const addCartResponse = await cartManager.addCart();
     return res
       .status(200)
-      .send({ status: "success", message: addCartResponse });
+      .send({ status: "success", message: addCartResponse[1] });
   } catch (error) {
     return res.status(400).send({ status: "error", error: error.message });
   }

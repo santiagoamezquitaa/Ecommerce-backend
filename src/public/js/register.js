@@ -9,12 +9,22 @@ document
     const inputAge = document.getElementById("age").value;
     const inputPassword = document.getElementById("password").value;
 
+    const cartId = await fetch("http://localhost:8080/api/carts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const cart = await cartId.json();
+
     const newUser = {
       firstName: inputName,
       lastName: inputLastName,
       email: inputEmail,
       age: inputAge,
       password: inputPassword,
+      cart: cart.message._id,
     };
 
     const response = await fetch(

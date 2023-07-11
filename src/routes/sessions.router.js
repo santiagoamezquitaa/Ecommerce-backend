@@ -79,4 +79,18 @@ router.get(
   }
 );
 
+router.get("/current", async (req, res) => {
+  try {
+    if (req.isAuthenticated()) {
+      const currentUserId = req.session.passport.user;
+      const getUserResponse = await userManager.getUser(currentUserId);
+      res.status(200).send(getUserResponse);
+    } else {
+      res.redirect("/login");
+    }
+  } catch (error) {
+    return res.status(500).send({ status: "error", error: error.message });
+  }
+});
+
 export default router;

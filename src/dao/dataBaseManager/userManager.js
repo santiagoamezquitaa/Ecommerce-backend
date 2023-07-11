@@ -35,4 +35,23 @@ export class UserManager {
       throw new Error(error);
     }
   }
+
+  async getUser(userId) {
+    try {
+      if (!userId) {
+        throw new Error("Falta el id del usuario");
+      }
+      const userFound = await userModel
+        .findById(userId)
+        .populate("cart")
+        .lean();
+      if (userFound !== null) {
+        return userFound;
+      } else {
+        throw new Error("No se encontro el usuario");
+      }
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
