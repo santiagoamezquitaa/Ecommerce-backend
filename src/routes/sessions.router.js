@@ -1,37 +1,41 @@
-import { Router } from "express";
 import passport from "passport";
 import usersController from "../controllers/users.controller.js";
+import BaseRouter from "./router.js";
 
-const router = Router();
+export default class SessionsRouter extends BaseRouter {
+  init() {
+    this.post(
+      "/register",
+      ["PUBLIC"],
+      passport.authenticate("register", { failureRedirect: "/failregister" }),
+      usersController.registerUser
+    );
 
-router.post(
-  "/register",
-  passport.authenticate("register", { failureRedirect: "/failregister" }),
-  usersController.registerUser
-);
+    this.get("/failregister", ["PUBLIC"], usersController.failRegisterUser);
 
-router.get("/failregister", usersController.failRegisterUser);
+    this.post(
+      "/login",
+      ["PUBLIC"],
+      passport.authenticate("login", { failureRedirect: "/faillogin" }),
+      usersController.loginUser
+    );
 
-router.post(
-  "/login",
-  passport.authenticate("login", { failureRedirect: "/faillogin" }),
-  usersController.loginUser
-);
+    this.get("/faillogin", ["PUBLIC"], usersController.failLoginUser);
 
-router.get("/faillogin", usersController.failLoginUser);
+    this.get(
+      "/github",
+      ["PUBLIC"],
+      passport.authenticate("github", { scope: ["user:email"] }),
+      usersController.github
+    );
 
-router.get(
-  "/github",
-  passport.authenticate("github", { scope: ["user:email"] }),
-  usersController.github
-);
+    this.get(
+      "/githubcallback",
+      ["PUBLIC"],
+      passport.authenticate("github", { failureRedirect: "/login" }),
+      usersController.githubCallback
+    );
 
-router.get(
-  "/githubcallback",
-  passport.authenticate("github", { failureRedirect: "/login" }),
-  usersController.githubCallback
-);
-
-router.get("/current", usersController.getUser);
-
-export default router;
+    this.get("/current", ["PUBLIC"], usersController.getUser);
+  }
+}

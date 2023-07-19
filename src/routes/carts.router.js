@@ -1,22 +1,32 @@
-import { Router } from "express";
 import cartsController from "../controllers/carts.controller.js";
+import BaseRouter from "./router.js";
 
-const router = Router();
+export default class CartsRouter extends BaseRouter {
+  init() {
+    this.get("/", ["PUBLIC"], cartsController.getCarts);
 
-router.get("/", cartsController.getCarts);
+    this.get("/:cid", ["PUBLIC"], cartsController.getProductsFromCart);
 
-router.get("/:cid", cartsController.getProductsFromCart);
+    this.post("/", ["PUBLIC"], cartsController.addCart);
 
-router.post("/", cartsController.addCart);
+    this.post("/:cid/product/:pid", ["USER"], cartsController.addProductToCart);
 
-router.post("/:cid/product/:pid", cartsController.addProductToCart);
+    this.delete(
+      "/:cid/products/:pid",
+      ["PUBLIC"],
+      cartsController.deleteProductFromCart
+    );
 
-router.delete("/:cid/products/:pid", cartsController.deleteProductFromCart);
+    this.put("/:cid", ["PUBLIC"], cartsController.updateProductsFromCart);
 
-router.put("/:cid", cartsController.updateProductsFromCart);
+    this.put(
+      "/:cid/products/:pid",
+      ["PUBLIC"],
+      cartsController.updateQuantityFromProduct
+    );
 
-router.put("/:cid/products/:pid", cartsController.updateQuantityFromProduct);
+    this.delete("/:cid", ["PUBLIC"], cartsController.deleteAllProductsFromCart);
 
-router.delete("/:cid", cartsController.deleteAllProductsFromCart);
-
-export default router;
+    this.post("/:cid/purchase", ["PUBLIC"], cartsController.postPurchase);
+  }
+}

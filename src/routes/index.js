@@ -1,16 +1,25 @@
 import { Router } from "express";
-import productsRoutes from "./products.router.js";
-import cartsRoutes from "./carts.router.js";
-import viewsRoutes from "./views.router.js";
-import messagesRoutes from "./chat.router.js";
-import sessionsRoutes from "./sessions.router.js";
+import ProductsRouter from "./products.router.js";
+import ChatRouter from "./chat.router.js";
+import SessionsRouter from "./sessions.router.js";
+import CartsRouter from "./carts.router.js";
+import ViewsRouter from "./views.router.js";
+import TicketsRouter from "./tickets.router.js";
 
 const router = Router();
 
-router.use("/api/products", productsRoutes);
-router.use("/api/carts", cartsRoutes);
-router.use("/api/messages", messagesRoutes);
-router.use("/api/sessions", sessionsRoutes);
-router.use("/", viewsRoutes);
+const viewsRouter = new ViewsRouter();
+const productsRouter = new ProductsRouter();
+const cartsRouter = new CartsRouter();
+const chatRouter = new ChatRouter();
+const sessionsRouter = new SessionsRouter();
+const ticketsRouter = new TicketsRouter();
+
+router.use("/", viewsRouter.getRouter());
+router.use("/api/carts", cartsRouter.getRouter());
+router.use("/api/messages", chatRouter.getRouter());
+router.use("/api/sessions", sessionsRouter.getRouter());
+router.use("/api/products", productsRouter.getRouter());
+router.use("/api/tickets", ticketsRouter.getRouter());
 
 export default router;

@@ -1,12 +1,11 @@
 const actualPage = document.currentScript.getAttribute("data-actualPage");
 let hasPrevPage = document.currentScript.getAttribute("data-hasPrevPage");
 let hasNextPage = document.currentScript.getAttribute("data-hasNextPage");
+const cartId = document.currentScript.getAttribute("data-userCartId");
 
 const prevPageButton = document.getElementById("prevPageButton");
 const nextPageButton = document.getElementById("nextPageButton");
 const addToCartButton = document.querySelectorAll(".addToCartButton");
-
-const cartId = "64965bc632f39e0243d82ffb";
 
 hasPrevPage = hasPrevPage === "true";
 hasNextPage = hasNextPage === "true";
@@ -39,6 +38,19 @@ addToCartButton.forEach((button) => {
         },
       }
     );
+  });
+});
+
+document.getElementById("buyNow").addEventListener("click", async () => {
+  await fetch(`http://localhost:8080/api/carts/${cartId}/purchase`, {
+    method: "POST",
+  });
+
+  await fetch(`http://localhost:8080/api/tickets`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
 });
 

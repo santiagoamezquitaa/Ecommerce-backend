@@ -7,6 +7,8 @@
     <p><strong>Años:</strong> {{user.age}}</p>
     <p><strong>Rol de usuario:</strong> {{user.role}}</p>
 
+    <button id="buyNow">Comprar Ahora!</button>
+
     <button id="logout">Cerrar sesión</button>
 </div>
 
@@ -59,4 +61,4 @@
 {{/if}}
 
 <script src="/js/products.js" data-actualPage="{{actualPage}}" data-hasPrevPage={{hasPrevPage}}
-    data-hasNextPage={{hasNextPage}}></script>
+    data-hasNextPage={{hasNextPage}} data-userCartId="{{user.cartId}}"></script>

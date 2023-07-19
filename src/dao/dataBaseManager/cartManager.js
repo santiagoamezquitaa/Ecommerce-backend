@@ -1,5 +1,7 @@
 import { cartModel } from "../models/cart.model.js";
+import { ProductManager } from "./productManager.js";
 
+const productManager = new ProductManager();
 export class CartManager {
   constructor() {}
 
@@ -152,5 +154,70 @@ export class CartManager {
     } catch (error) {
       throw new Error(error);
     }
+  }
+
+  async purchaseOneCart(cartId) {
+    try {
+      const cart = await cartModel.findById(cartId);
+      if (!cart) {
+        throw new Error("El carrito no existe.");
+      }
+
+      const unprocessedProducts = [];
+      const processedProducts = [];
+      let total = 0;
+
+      for (const item of cart.products) {
+        const productId = item.product;
+        const quantity = item.quantity;
+
+        const product = await productManager.getProductById(productId);
+
+        const isStockSufficient = product.stock >= quantity;
+        const productStatus = isStockSufficient
+          ? processedProducts
+          : unprocessedProducts;
+
+        if (isStockSufficient) {
+          const newStock = product.stock - quantity;
+          await productManager.updateProduct(productId, { stock: newStock });
+
+          const productValue = product.price;
+          const subtotal = productValue * quantity;
+          total += subtotal;
+        }
+
+        productStatus.push(`${product._id}`);
+      }
+
+      for (const iterator of processedProducts) {
+        await this.delete(cartId, iterator);
+      }
+
+      return { unprocessedProducts, processedProducts, total };
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async delete(cartId, productId) {
+    try {
+      const cartFound = await cartModel.findOne({ _id: cartId });
+      if (cartFound === null) {
+        throw new Error("El carrito no existe.");
+      }
+
+      const indexProductInCart = cartFound.products.findIndex(
+        (item) => item.product.toString() === productId
+      );
+
+      if (indexProductInCart !== -1) {
+        cartFound.products.splice([indexProductInCart], 1);
+      } else {
+        throw new Error("El producto no existe.");
+      }
+
+      await cartFound.save();
+    } catch (error) {}
   }
 }

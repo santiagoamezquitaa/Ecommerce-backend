@@ -1,3 +1,4 @@
+import CurrentUserDTO from "../dao/dto/currentUser.dto.js";
 import { userService } from "../services/index.js";
 
 const registerUser = async (req, res) => {
@@ -20,13 +21,9 @@ const loginUser = async (req, res) => {
     name: `${req.user.firstName} ${req.user.lastName}`,
     email: req.user.email,
     age: req.user.age,
+    role: req.user.role,
+    cartId: req.user.cart,
   };
-
-  if (req.session.user.email === "adminCoder@coder.com") {
-    req.session.user.role = "admin";
-  } else {
-    req.session.user.role = "user";
-  }
 
   res.send({
     status: "success",
@@ -44,7 +41,8 @@ const getUser = async (req, res) => {
     if (req.isAuthenticated()) {
       const currentUserId = req.session.passport.user;
       const getUserResponse = await userService.getOneUser(currentUserId);
-      res.status(200).send(getUserResponse);
+      const currentUserDTO = new CurrentUserDTO(getUserResponse);
+      res.status(200).send(currentUserDTO);
     } else {
       res.redirect("/login");
     }
@@ -58,13 +56,9 @@ const githubCallback = async (req, res) => {
     name: `${req.user.firstName} ${req.user.lastName}`,
     email: req.user.email,
     age: req.user.age,
+    role: req.user.role,
+    totalPurchase: 0,
   };
-
-  if (req.session.user.email === "adminCoder@coder.com") {
-    req.session.user.role = "admin";
-  } else {
-    req.session.user.role = "user";
-  }
 
   res.redirect("/products");
 };

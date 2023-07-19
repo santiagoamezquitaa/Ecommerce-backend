@@ -1,31 +1,32 @@
-import express from "express";
 import viewsController from "../controllers/views.controller.js";
+import BaseRouter from "./router.js";
 
-const router = express.Router();
+export default class ViewsRouter extends BaseRouter {
+  init() {
+    this.get("/", ["USER", "ADMIN"], viewsController.getViewAllProducts);
 
-router.get("/", auth, viewsController.getViewAllProducts);
+    this.get(
+      "/realtimeproducts",
+      ["USER", "ADMIN"],
+      viewsController.getViewRealtimeProducts
+    );
 
-router.get("/realtimeproducts", auth, viewsController.getViewRealtimeProducts);
+    this.get("/chat", ["USER"], viewsController.getViewChat);
 
-router.get("/chat", auth, viewsController.getViewChat);
+    this.get(
+      "/products",
+      ["USER", "ADMIN"],
+      viewsController.getViewAllProductsAndProfile
+    );
 
-router.get("/products", auth, viewsController.getViewAllProductsAndProfile);
+    this.get("/carts/:cid", ["USER", "ADMIN"], viewsController.getViewOneCart);
 
-router.get("/carts/:cid", auth, viewsController.getViewOneCart);
+    this.get("/login", ["PUBLIC"], viewsController.getViewLogin);
 
-router.get("/login", viewsController.getViewLogin);
+    this.get("/register", ["PUBLIC"], viewsController.getViewRegister);
 
-router.get("/register", viewsController.getViewRegister);
+    this.get("/profile", ["USER", "ADMIN"], viewsController.getViewProfile);
 
-router.get("/profile", auth, viewsController.getViewProfile);
-
-router.get("/logout", viewsController.getViewLogout);
-
-function auth(req, res, next) {
-  if (req.session.user) {
-    return next();
+    this.get("/logout", ["PUBLIC"], viewsController.getViewLogout);
   }
-  res.status(401).redirect("/login");
 }
-
-export default router;

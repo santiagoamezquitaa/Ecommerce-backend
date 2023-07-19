@@ -71,7 +71,6 @@ const initializePassport = () => {
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
-          console.log(profile);
           let user = await userModel.findOne({ email: profile._json.email });
           if (!user) {
             let newUser = {
@@ -98,8 +97,12 @@ const initializePassport = () => {
   });
 
   passport.deserializeUser(async (id, done) => {
-    let user = await userModel.findById(id);
-    done(null, user);
+    try {
+      let user = await userModel.findById(id);
+      done(null, user);
+    } catch (error) {
+      done(error);
+    }
   });
 };
 

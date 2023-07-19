@@ -1,10 +1,10 @@
-import { Router } from "express";
 import chatController from "../controllers/chat.controller.js";
+import BaseRouter from "./router.js";
 
-const router = Router();
+export default class ChatRouter extends BaseRouter {
+  init() {
+    this.get("/", ["USER"], chatController.getMessages);
 
-router.get("/", chatController.getMessages);
-
-router.post("/", chatController.addMessage);
-
-export default router;
+    this.post("/", ["USER"], chatController.addMessage);
+  }
+}

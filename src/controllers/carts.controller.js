@@ -12,9 +12,8 @@ const getCarts = async (req, res) => {
 const getProductsFromCart = async (req, res) => {
   try {
     const cartId = req.params.cid;
-    const productsFromCart = await cartsService.deleteAllProductsFromOneCart(
-      cartId
-    );
+    const productsFromCart = await cartsService.getAllProductsFromCart(cartId);
+
     return res.status(200).send(productsFromCart);
   } catch (error) {
     return res.status(500).send({ status: "error", error: error.message });
@@ -113,6 +112,23 @@ const deleteAllProductsFromCart = async (req, res) => {
   }
 };
 
+const postPurchase = async (req, res) => {
+  try {
+    const cartId = req.params.cid;
+
+    const purchaseCartResponse = await cartsService.purchaseCart(cartId);
+
+    req.session.user.totalPurchase = purchaseCartResponse.total;
+
+    return res.status(200).send({
+      status: "success",
+      message: purchaseCartResponse,
+    });
+  } catch (error) {
+    return res.status(500).send({ status: "error", error: error.message });
+  }
+};
+
 export default {
   getCarts,
   getProductsFromCart,
@@ -122,4 +138,5 @@ export default {
   updateProductsFromCart,
   updateQuantityFromProduct,
   deleteAllProductsFromCart,
+  postPurchase,
 };
