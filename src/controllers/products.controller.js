@@ -1,5 +1,8 @@
 import socketServer from "../app.js";
 import { productsService } from "../services/index.js";
+import CustomError from "../utils.errors/custom.errors.js";
+import enumErrors from "../utils.errors/enum.errors.js";
+import generateProductErrorInfo from "../utils.errors/info.errors.js";
 
 const getProducts = async (req, res) => {
   try {
@@ -56,7 +59,54 @@ const getProductById = async (req, res) => {
 
 const addProduct = async (req, res) => {
   try {
-    const product = req.body;
+    const {
+      title,
+      description,
+      price,
+      category,
+      code,
+      stock,
+      status,
+      thumbnails,
+    } = req.body;
+
+    if (
+      !title ||
+      !description ||
+      !price ||
+      !category ||
+      !code ||
+      !stock ||
+      !status
+    ) {
+      CustomError.createError({
+        name: "Creación de producto fallida",
+        cause: generateProductErrorInfo({
+          title,
+          description,
+          price,
+          category,
+          code,
+          stock,
+          status,
+          thumbnails,
+        }),
+        message: "Error creando el producto",
+        code: enumErrors.INVALID_TYPES_ERROR,
+      });
+    }
+
+    const product = {
+      title,
+      description,
+      price,
+      category,
+      code,
+      stock,
+      status,
+      thumbnails,
+    };
+
     const addProductResponse = await productsService.addOneProduct(product);
     socketServer.emit("productAdded", addProductResponse[1]);
     return res

@@ -10,6 +10,7 @@ import config from "./config/config.js";
 import __dirname from "./utils.js";
 import routes from "./routes/index.js";
 import { Server } from "socket.io";
+import errorHandler from "./middlewares/errors/index.js";
 
 const app = express();
 const httpServer = app.listen(config.port, () => {
@@ -45,6 +46,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use("/", routes);
+app.use(errorHandler);
 
 socketServer.on("connection", (socket) => {
   console.log("Nuevo cliente conectado");
