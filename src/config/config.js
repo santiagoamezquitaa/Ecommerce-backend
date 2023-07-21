@@ -8,4 +8,5 @@ export default {
   sessionTtl: process.env.SESSION_TTL,
   gitHubClientId: process.env.GITHUB_CLIENT_ID,
   githubClientSecret: process.env.GITHUB_CLIENT_SECRET,
+  loggerEnviroment: process.env.LOGGER_ENVIROMENT,
 };

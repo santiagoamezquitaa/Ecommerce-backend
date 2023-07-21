@@ -1,5 +1,7 @@
+import { logger } from "../utils.loggers/logger.js";
+
 const generateProductErrorInfo = (product) => {
-  console.log(`Una o mas propiedades están incompletas o no son validas.
+  logger.fatal(`Una o mas propiedades están incompletas o no son validas.
     Propiedades requeridas:
     * title: Es de tipo String, tipo recibido: ${product.title},
     * description: Es de tipo String, tipo recibido: ${product.description},

@@ -1,12 +1,13 @@
 import CurrentUserDTO from "../dao/dto/currentUser.dto.js";
 import { userService } from "../services/index.js";
+import { logger } from "../utils.loggers/logger.js";
 
 const registerUser = async (req, res) => {
   res.send({ status: "success", message: "Usuario registrado" });
 };
 
 const failRegisterUser = async (req, res) => {
-  console.log("Estrategia fallida");
+  logger.fatal("Estrategia fallida");
   res.send({ status: "error", error: "Registro fallido" });
 };
 

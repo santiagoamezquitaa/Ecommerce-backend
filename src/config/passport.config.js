@@ -4,6 +4,7 @@ import { createhash, isValidPassword } from "../utils.js";
 import GitHubStrategy from "passport-github2";
 import { userModel } from "../dao/models/user.model.js";
 import config from "./config.js";
+import { logger } from "../utils.loggers/logger.js";
 
 const LocalStrategy = local.Strategy;
 
@@ -17,7 +18,7 @@ const initializePassport = () => {
         try {
           const user = await userModel.findOne({ email: username });
           if (user) {
-            console.log("El usuario ya existe");
+            logger.error("El usuario ya existe");
             return done(null, false);
           }
           const newUser = {
@@ -47,7 +48,7 @@ const initializePassport = () => {
         try {
           const user = await userModel.findOne({ email: username });
           if (!user) {
-            console.log("El usuario no existe");
+            logger.error("El usuario no existe");
           }
           if (!isValidPassword(user, password)) {
             return done(null, false);
