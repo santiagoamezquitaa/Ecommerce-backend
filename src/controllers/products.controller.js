@@ -70,6 +70,15 @@ const addProduct = async (req, res) => {
       thumbnails,
     } = req.body;
 
+    let owner = "";
+    const loggerUserRole = req.session.user.role;
+
+    if (loggerUserRole.toUpperCase() === "ADMIN") {
+      owner = "admin";
+    } else {
+      owner = req.session.user.email;
+    }
+
     if (
       !title ||
       !description ||
@@ -104,6 +113,7 @@ const addProduct = async (req, res) => {
       code,
       stock,
       status,
+      owner,
       thumbnails,
     };
 
@@ -139,8 +149,13 @@ const deleteProduct = async (req, res) => {
   try {
     const productId = req.params.pid;
 
+    const loggedUserEmail = req.session.user.email;
+    const loggedUserRole = req.session.user.role;
+
     const deleteProductResponse = await productsService.deleteOneProduct(
-      productId
+      productId,
+      loggedUserEmail,
+      loggedUserRole
     );
     socketServer.emit("productDeleted", deleteProductResponse[1]);
     return res

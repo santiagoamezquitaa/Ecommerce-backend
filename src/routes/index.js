@@ -7,6 +7,8 @@ import ViewsRouter from "./views.router.js";
 import TicketsRouter from "./tickets.router.js";
 import MockingRouter from "./mocking.router.js";
 import LoggersRouter from "./loggers.router.js";
+import MailsRouter from "./mails.router.js";
+import TokensRouter from "./tokens.router.js";
 
 const router = Router();
 
@@ -16,8 +18,10 @@ const cartsRouter = new CartsRouter();
 const chatRouter = new ChatRouter();
 const sessionsRouter = new SessionsRouter();
 const ticketsRouter = new TicketsRouter();
+const tokensRouter = new TokensRouter();
 const mockingRouter = new MockingRouter();
 const loggerRouter = new LoggersRouter();
+const mailRouter = new MailsRouter();
 
 router.use("/", viewsRouter.getRouter());
 router.use("/api/carts", cartsRouter.getRouter());
@@ -25,7 +29,9 @@ router.use("/api/messages", chatRouter.getRouter());
 router.use("/api/sessions", sessionsRouter.getRouter());
 router.use("/api/products", productsRouter.getRouter());
 router.use("/api/tickets", ticketsRouter.getRouter());
+router.use("/api/tokens", tokensRouter.getRouter());
 router.use("/", mockingRouter.getRouter());
 router.use("/", loggerRouter.getRouter());
+router.use("/", mailRouter.getRouter());
 
 export default router;

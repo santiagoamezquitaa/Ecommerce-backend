@@ -128,6 +128,22 @@ const getViewLogout = (req, res) => {
   });
 };
 
+const getViewForgotPassword = (req, res) => {
+  res.render("forgotPassword", {
+    title: "Forgot Password",
+  });
+};
+
+const getViewResetPassword = (req, res) => {
+  const token = req.params.token;
+  const email = req.params.email;
+  res.render("resetPassword", {
+    token,
+    email,
+    title: "reset Password",
+  });
+};
+
 export default {
   getViewAllProducts,
   getViewRealtimeProducts,
@@ -138,4 +154,6 @@ export default {
   getViewRegister,
   getViewProfile,
   getViewLogout,
+  getViewForgotPassword,
+  getViewResetPassword,
 };

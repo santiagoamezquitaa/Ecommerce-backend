@@ -9,7 +9,11 @@ export default class CartsRouter extends BaseRouter {
 
     this.post("/", ["PUBLIC"], cartsController.addCart);
 
-    this.post("/:cid/product/:pid", ["USER"], cartsController.addProductToCart);
+    this.post(
+      "/:cid/product/:pid",
+      ["USER", "USER_PREMIUM"],
+      cartsController.addProductToCart
+    );
 
     this.delete(
       "/:cid/products/:pid",

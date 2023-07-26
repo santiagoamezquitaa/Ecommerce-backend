@@ -74,13 +74,26 @@ export class ProductManager {
     }
   }
 
-  async deleteProduct(productId) {
+  async deleteProduct(productId, loggedUserEmail, loggedUserRole) {
     try {
-      const productDeleted = await productModel.deleteOne({ _id: productId });
-      if (productDeleted.deletedCount !== 0) {
-        return ["Producto eliminado satisfactoriamente", productId];
-      } else {
+      const product = await productModel.findById(productId);
+
+      if (!product) {
         throw new Error(this.notFoundMessage);
+      }
+
+      if (
+        product.owner === loggedUserEmail ||
+        loggedUserRole.toUpperCase() === "ADMIN"
+      ) {
+        const productDeleted = await productModel.deleteOne({ _id: productId });
+        if (productDeleted.deletedCount !== 0) {
+          return ["Producto eliminado satisfactoriamente", productId];
+        } else {
+          throw new Error(this.notFoundMessage);
+        }
+      } else {
+        throw new Error("No tienes permiso para eliminar este producto");
       }
     } catch (error) {
       throw new Error(error);

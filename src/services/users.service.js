@@ -14,4 +14,16 @@ export default class UsersService {
   getOneUser = (userId) => {
     return this.dao.getUser(userId);
   };
+
+  putOneUserByEmail = (emailUser, newPassword) => {
+    return this.dao.putUserByEmail(emailUser, newPassword);
+  };
+
+  getOneUserByEmail = (emailUser) => {
+    return this.dao.getUserByEmail(emailUser);
+  };
+
+  putOneUserRole = (userId) => {
+    return this.dao.putUserRole(userId);
+  };
 }

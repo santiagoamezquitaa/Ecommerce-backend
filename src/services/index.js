@@ -10,6 +10,8 @@ import TicketsService from "./tickets.service.js";
 import { TicketManager } from "../dao/dataBaseManager/ticketManager.js";
 import MockingService from "./mockig.service.js";
 import { MockingManager } from "../dao/dataBaseManager/mockingManager.js";
+import TokenService from "./token.service.js";
+import { TokenManager } from "../dao/dataBaseManager/tokenManager.js";
 
 export const productsService = new ProductsService(new ProductManager());
 export const cartsService = new CartsService(new CartManager());
@@ -17,3 +19,4 @@ export const chatService = new ChatService(new ChatManager());
 export const userService = new UsersService(new UserManager());
 export const ticketService = new TicketsService(new TicketManager());
 export const mockingService = new MockingService(new MockingManager());
+export const tokenService = new TokenService(new TokenManager());

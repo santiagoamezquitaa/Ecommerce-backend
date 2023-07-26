@@ -37,5 +37,11 @@ export default class SessionsRouter extends BaseRouter {
     );
 
     this.get("/current", ["PUBLIC"], usersController.getUser);
+
+    this.get("/:email", ["PUBLIC"], usersController.getUserByEmail);
+
+    this.put("/:email", ["PUBLIC"], usersController.putUserByEmail);
+
+    this.put("/premium/:uid", ["PUBLIC"], usersController.putUsersRole);
   }
 }

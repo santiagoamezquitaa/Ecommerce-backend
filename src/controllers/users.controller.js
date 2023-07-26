@@ -52,6 +52,40 @@ const getUser = async (req, res) => {
   }
 };
 
+const putUserByEmail = async (req, res) => {
+  try {
+    const emailUser = req.params.email;
+    const newPassword = req.body;
+    const putUserEmailResponse = await userService.putOneUserByEmail(
+      emailUser,
+      newPassword
+    );
+    res.status(200).send({ status: "success", payload: putUserEmailResponse });
+  } catch (error) {
+    return res.status(500).send({ status: "error", error: error.message });
+  }
+};
+
+const getUserByEmail = async (req, res) => {
+  try {
+    const emailUser = req.params.email;
+    const getUserEmailResponse = await userService.getOneUserByEmail(emailUser);
+    res.status(200).send({ status: "success", payload: getUserEmailResponse });
+  } catch (error) {
+    return res.status(400).send({ status: "error", error: error.message });
+  }
+};
+
+const putUsersRole = async (req, res) => {
+  try {
+    const userId = req.params.uid;
+    const putUsersRoleResponse = await userService.putOneUserRole(userId);
+    res.status(200).send({ status: "success", payload: putUsersRoleResponse });
+  } catch (error) {
+    return res.status(400).send({ status: "error", error: error.message });
+  }
+};
+
 const githubCallback = async (req, res) => {
   req.session.user = {
     name: `${req.user.firstName} ${req.user.lastName}`,
@@ -74,4 +108,7 @@ export default {
   github,
   githubCallback,
   getUser,
+  putUserByEmail,
+  getUserByEmail,
+  putUsersRole,
 };

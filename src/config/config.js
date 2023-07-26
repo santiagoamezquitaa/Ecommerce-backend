@@ -9,4 +9,6 @@ export default {
   gitHubClientId: process.env.GITHUB_CLIENT_ID,
   githubClientSecret: process.env.GITHUB_CLIENT_SECRET,
   loggerEnviroment: process.env.LOGGER_ENVIROMENT,
+  gmailUser: process.env.GMAIL_USER,
+  gmailPassword: process.env.PASSWORD_GMAIL,
 };

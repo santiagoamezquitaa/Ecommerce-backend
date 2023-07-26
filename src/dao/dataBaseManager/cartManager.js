@@ -40,8 +40,14 @@ export class CartManager {
     }
   }
 
-  async addProductToCart(cartId, productId) {
+  async addProductToCart(cartId, productId, loggedUserEmail) {
     try {
+      const product = await productManager.getProductById(productId);
+
+      if (product.owner === loggedUserEmail) {
+        throw new Error("No puedes agregar un producto que es de tu propiedad");
+      }
+
       const cartFound = await cartModel.findOne({ _id: cartId });
       if (cartFound === null) {
         throw new Error("El carrito no existe.");

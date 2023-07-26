@@ -19,7 +19,7 @@ export default class ProductsService {
     return this.dao.updateProduct(productId, fieldsUpdate);
   };
 
-  deleteOneProduct = (productId) => {
-    return this.dao.deleteProduct(productId);
+  deleteOneProduct = (productId, loggedUserEmail, loggedUserRole) => {
+    return this.dao.deleteProduct(productId, loggedUserEmail, loggedUserRole);
   };
 }

@@ -35,10 +35,12 @@ const addProductToCart = async (req, res) => {
   try {
     const cartId = req.params.cid;
     const productId = req.params.pid;
+    const loggedUserEmail = req.session.user.email;
 
     const addProductToCartResponse = await cartsService.addOneProductToCart(
       cartId,
-      productId
+      productId,
+      loggedUserEmail
     );
 
     return res
