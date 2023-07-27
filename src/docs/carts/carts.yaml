@@ -1,0 +1,379 @@
+openapi: "3.0.1"
+info: API Carts
+version: "1.0"
+paths:
+  /api/carts:
+    get:
+      summary: Obtiene todos los carritos
+      description: Obtiene todos los carrtios de todos los usuarios, realiza un populate para poder mostrar toda la data de los productos.
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Todos los carritos fueron obtenidos de forma exitosa
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Cart"
+        "500":
+          description: Error interno del servidor.
+    post:
+      summary: Crea un nuevo carrito
+      description: Crea un nuevo carrito sin un request body, no requieres estar logeado en la plataforma.
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: El carrito fue creado de forma exitosa
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/voidCart"
+        "500":
+          description: Error interno del servidor.
+
+  /api/carts/{cid}:
+    get:
+      summary: Obtiene todos los productos de un carrito
+      description: Obtiene todos los productos de un carrtio con base en el id (cid) del carrito, el cual es proporcionado por query params, realiza un populate para poder mostrar toda la data de los productos que contenga el carrito.
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: id del carrito solicitado.
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Todos los productos del carrito fueron obtenidos de forma exitosa
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Cart"
+        "400":
+          description: Error de cliente, usualmente generado por un id de carrito no existente.
+        "500":
+          description: Error interno del servidor.
+    put:
+      summary: Actualiza el arreglo de productos de un carrito
+      description: Actualiza el arreglo de productos de un carrito con base en el id (cid) del carrito, el cual es proporcionado por query params, también recibe por request body el nuevo arreglo de productos que tendrá el carrito.
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: id del carrito a actualizar.
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: El carrito fue actualizado de forma exitosa
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/requestBodies/putCart"
+        "400":
+          description: Error de cliente, usualmente generado por un id de carrito no existente.
+        "500":
+          description: Error interno del servidor.
+    delete:
+      summary: Elimina todos los productos de un carrito
+      description: Elimina todos los productos de un carrito con base en el id (cid) del carrito, el cual es proporcionado por query params.
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: id del carrito para eliminar los productos.
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Los productos del carrito fueron borrados de forma exitosa
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Cart"
+        "400":
+          description: Error de cliente, usualmente generado por un id de carrito no existente.
+        "500":
+          description: Error interno del servidor.
+
+  /api/carts/{cid}/product/{pid}:
+    post:
+      summary: Agrega un producto en un carrito
+      description: Agrega un producto (pid) en un carrito (cid) con base en sus id's, los cuales sob obtenidos apartir de query params, no es necesario un request body, pero si es necesario estar autenticado con una cuenta con rol de user o user_premium.
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: id del carrito en el cual se va agregar el producto.
+          schema:
+            $type: String
+        - name: pid
+          in: path
+          required: true
+          description: id del producto a agregar.
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: El producto fue agregado en el carrito de forma exitosa.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Cart"
+        "400":
+          description: Error de cliente, usualmente generado por un id de carrito y/o de producto no existentes.
+        "401":
+          description: Error de cliente, usualmente generado por agregar un producto que es de su propiedad (owner).
+        "500":
+          description: Error interno del servidor.
+
+  /api/carts/{cid}/products/{pid}:
+    delete:
+      summary: Elimina un producto de un carrito
+      description: Elimina un producto (pid) de un carrito (cid) con base en sus id's, los cuales sob obtenidos apartir de query params, no es necesario estar autenticado.
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: id del carrito del cual se va a borrar el producto.
+          schema:
+            $type: String
+        - name: pid
+          in: path
+          required: true
+          description: id del producto a eliminar.
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: El producto fue eliminado del carrito de forma exitosa.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Cart"
+        "400":
+          description: Error de cliente, usualmente generado por un id de carrito y/o de producto no existentes.
+        "500":
+          description: Error interno del servidor.
+    put:
+      summary: Actualiza la cantidad de un producto en un carrito
+      description: Actualiza la cantidad de un producto en un carrito con base en el id (cid) del carrito y el id del producto (pid), los cuales son proporcionados por query params, también recibe por request body la nueva cantidad del producto.
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: id del carrito a actualizar la cantidad.
+          schema:
+            $type: String
+        - name: pid
+          in: path
+          required: true
+          description: id del producto a eliminar la cantidad.
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: El carrito fue actualizado de forma exitosa
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/requestBodies/putCartQuantityProduct"
+        "400":
+          description: Error de cliente, usualmente generado por un id de carrito y/o un id de producto no existente.
+        "500":
+          description: Error interno del servidor.
+  /api/carts/{cid}/purchase:
+    post:
+      summary: Realiza la compra de un carrito
+      description: Realiza la coompra de un carrito, es decir, finaliza la compra. Lo hace a aprtir del id del carrito (cid), los cuales sob obtenidos apartir de query params, no es necesario un request body, ni tampoco estar autenticado.
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: id del carrito del cual se va a cerrar la compra.
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: La finalización de la compra del carrito fue exitosa.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Cart"
+        "400":
+          description: Error de cliente, usualmente generado por un id de carrito no existentes.
+        "500":
+          description: Error interno del servidor.
+
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: Id generado autómaticamente por Mongo
+        products:
+          type: array
+          description: Array que contiene los productos y la cantidad de los mismos, que tendrá el carrito.
+          items:
+            type: object
+            description: Objeto que contiene al producto y su cantidad.
+            properties:
+              product:
+                $ref: "#components/schemas/Product"
+                description: Objeto que contiene la data del producto, realiza un populate al schema de products apartir de su Id.
+              quantity:
+                type: Number
+                description: Contiene la cantidad del producto.
+      example:
+        _id: ObjectId("64c03515f17ec5862ad9b327")
+        products:
+          [
+            {
+              product:
+                {
+                  _id: "64c03515f17ec5862ad9b327",
+                  title: "Genérico Acero Camiseta",
+                  description: "The Football Is Good For Training And Recreational Purposes",
+                  price: 372,
+                  category: "Mascotas",
+                  code: 28251690318101090,
+                  stock: 8,
+                  status: "true",
+                  owner: "admin",
+                  thumbnails: [],
+                },
+              quantity: 2,
+            },
+          ]
+    voidCart:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: Id generado autómaticamente por Mongo
+        products:
+          type: array
+          description: Array que contiene los productos y la cantidad de los mismos, que tendrá el carrito.
+          items:
+            type: object
+            description: Objeto que contiene al producto y su cantidad.
+            properties:
+              product:
+                $ref: "#components/schemas/Product"
+                description: Objeto que contiene la data del producto, realiza un populate al schema de products apartir de su Id.
+              quantity:
+                type: Number
+                description: Contiene la cantidad del producto.
+      example:
+        _id: ObjectId("64c03515f17ec5862ad9b327")
+        products: []
+    Product:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: Id generado autómaticamente por Mongo
+        title:
+          type: String
+          description: Nombre del producto
+        description:
+          type: String
+          description: Descripción del producto
+        price:
+          type: Number
+          description: Precio del producto
+        category:
+          type: String
+          description: Categoría del producto
+        code:
+          type: Number
+          description: Código del producto, este campo es único
+        stock:
+          type: Number
+          description: Número de unidades del producto
+        status:
+          type: String
+          description: Disponibilidad del producto
+        owner:
+          type: String
+          description: Dueño del producto (email), por defecto se pondrá "admin"
+        thumbnails:
+          type: Array
+          description: Imagenes del producto, esta propiedad es opcional
+      example:
+        _id: ObjectId("64c03515f17ec5862ad9b327")
+        title: Camiseta
+        description: Azul, manga corta, tela delgada
+        price: 100
+        category: Ropa para hombre
+        code: 95331690318101180
+        stock: 12
+        status: "true"
+        owner: ricardo@gmail.com
+        thumbnails: ["foto.png"]
+  requestBodies:
+    putCart:
+      description: Body con el nuevo arreglo de productos que contendra el carrito.
+      properties:
+        type: array
+        description: Array que contiene los productos y la cantidad de los mismos, que tendrá el carrito.
+        items:
+          type: object
+          description: Objeto que contiene al producto y su cantidad.
+          properties:
+            product:
+              type: Object
+              description: Objeto que contiene el id del producto.
+              properties:
+                _id:
+                  type: ObjectId
+                  description: Id del producto
+            quantiy:
+              type: Number
+              description: Cantidad del producto
+      example: [{ product: { _id: "64c03515f17ec5862ad9b327" }, quantity: 8 }]
+    putCartQuantityProduct:
+      description: Body con la nueva cantidad del producto del carrito.
+      properties:
+        type: object
+        description: Objeto que contiene la nueva cantidad del producto.
+        properties:
+          newQuantity:
+          type: number
+          description: Propiedad con la nueva cantidad del producto.
+      example: { quantity: 10 }

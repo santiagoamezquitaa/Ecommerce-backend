@@ -12,12 +12,29 @@ import routes from "./routes/index.js";
 import { Server } from "socket.io";
 import errorHandler from "./middlewares/errors/index.js";
 import { addLogger, logger } from "./utils.loggers/logger.js";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUiExpress from "swagger-ui-express";
 
 const app = express();
 const httpServer = app.listen(config.port, () => {
   logger.info(`Servidor arriba en el puerto ${config.port}!`);
 });
 const socketServer = new Server(httpServer);
+
+const swaggerOptions = {
+  definition: {
+    openapi: "3.0.1",
+    info: {
+      title: "Documentación Ecommerce",
+      description:
+        "Esta documentación abarcará dos módulos del proyecto: el módulo de productos (products) y el de carritos (carts). El proyecto cuenta con más módulos; sin embargo, en este documento nos enfocaremos únicamente en estos dos mencionados.",
+    },
+  },
+  apis: [`${__dirname}/docs/**/*.yaml`],
+};
+
+const specs = swaggerJSDoc(swaggerOptions);
+app.use("/docs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
 app.engine("handlebars", handlebars.engine());
 app.set("views", __dirname + "/views");

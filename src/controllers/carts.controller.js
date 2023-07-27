@@ -5,7 +5,7 @@ const getCarts = async (req, res) => {
     const carts = await cartsService.getAllCarts();
     return res.status(200).send(carts);
   } catch (error) {
-    return res.status(200).send({ status: "error", error: error.message });
+    return res.status(500).send({ status: "error", error: error.message });
   }
 };
 
