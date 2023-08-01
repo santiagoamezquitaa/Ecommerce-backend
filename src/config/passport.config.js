@@ -16,6 +16,9 @@ const initializePassport = () => {
       async (req, username, password, done) => {
         const { firstName, lastName, email, age, cart } = req.body;
         try {
+          if(!firstName || !lastName || !email || !age) {
+            return done("Faltan campos", false)
+          }
           const user = await userModel.findOne({ email: username });
           if (user) {
             logger.error("El usuario ya existe");

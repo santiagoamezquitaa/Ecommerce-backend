@@ -8,7 +8,7 @@ const registerUser = async (req, res) => {
 
 const failRegisterUser = async (req, res) => {
   logger.fatal("Estrategia fallida");
-  res.send({ status: "error", error: "Registro fallido" });
+  res.status(400).send({ status: "error", error: req.query.error });
 };
 
 const loginUser = async (req, res) => {

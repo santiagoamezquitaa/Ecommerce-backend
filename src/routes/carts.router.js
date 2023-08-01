@@ -31,6 +31,8 @@ export default class CartsRouter extends BaseRouter {
 
     this.delete("/:cid", ["PUBLIC"], cartsController.deleteAllProductsFromCart);
 
+    this.delete("/:cid/delete", ["PUBLIC"], cartsController.deleteCart);
+
     this.post("/:cid/purchase", ["PUBLIC"], cartsController.postPurchase);
   }
 }

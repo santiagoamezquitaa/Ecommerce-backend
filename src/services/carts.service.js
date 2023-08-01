@@ -42,4 +42,8 @@ export default class CartsService {
   purchaseCart = (cartId) => {
     return this.dao.purchaseOneCart(cartId);
   };
+
+  deleteOneCart = (cartId) => {
+    return this.dao.deleteCart(cartId);
+  };
 }

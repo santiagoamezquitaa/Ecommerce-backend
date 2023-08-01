@@ -226,4 +226,17 @@ export class CartManager {
       await cartFound.save();
     } catch (error) {}
   }
+
+  async deleteCart(cartId) {
+    try {
+        const cartDeleted = await cartModel.deleteOne({ _id: cartId });
+        if (cartDeleted.deletedCount !== 0) {
+          return cartDeleted;
+        } else {
+          throw new Error("El carrito no existe.");
+        }
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }

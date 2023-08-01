@@ -131,6 +131,21 @@ const postPurchase = async (req, res) => {
   }
 };
 
+const deleteCart = async (req, res) => {
+  try {
+    const cartId = req.params.cid;
+
+    const deleteCartResponse = await cartsService.deleteOneCart(cartId);
+
+    return res.status(200).send({
+      status: "success",
+      message: deleteCartResponse,
+    });
+  } catch (error) {
+    return res.status(400).send({ status: "error", error: error.message }); 
+  }
+}
+
 export default {
   getCarts,
   getProductsFromCart,
@@ -141,4 +156,5 @@ export default {
   updateQuantityFromProduct,
   deleteAllProductsFromCart,
   postPurchase,
+  deleteCart
 };
