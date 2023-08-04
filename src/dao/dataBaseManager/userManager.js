@@ -102,28 +102,97 @@ export class UserManager {
       }
       const userRole = userFound.role;
       let newRole = "";
-      if (userRole.toUpperCase() === "USER") {
-        newRole = "User_premium";
-      } else if (userRole.toUpperCase() === "USER_PREMIUM") {
-        newRole = "User";
-      } else {
+      let userRoleUpdated = "";
+
+      if (
+        userRole.toUpperCase() !== "USER" &&
+        userRole.toUpperCase() !== "USER_PREMIUM"
+      ) {
         throw new Error(
           "El rol del usuario proporcionado no puede ser cambiado (solo: User y User_premium)"
         );
       }
 
-      const userRoleUpdated = await userModel.updateOne(
-        { _id: userId },
-        { role: newRole }
-      );
+      if (userRole.toUpperCase() === "USER" && userFound.statusDocuments) {
+        newRole = "User_premium";
 
-      console.log(userRoleUpdated);
+        userRoleUpdated = await userModel.updateOne(
+          { _id: userId },
+          { role: newRole }
+        );
+      } else if (userRole.toUpperCase() === "USER_PREMIUM") {
+        newRole = "User";
+
+        userRoleUpdated = await userModel.updateOne(
+          { _id: userId },
+          {
+            role: newRole,
+            statusDocuments: false,
+            documents: [],
+          }
+        );
+      } else {
+        throw new Error("Todos los documentos solicitados no fueron cargados");
+      }
 
       if (userRoleUpdated.n !== 0) {
         return userRoleUpdated;
       } else {
-        throw new Error("Ocurrio un problema al actualizar la contrraseña");
+        throw new Error("Ocurrio un problema al actualizar el rol");
       }
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async postDocumentsUser(
+    userId,
+    {
+      fileProfilePicture,
+      fileProductPicture,
+      fileIdentification,
+      fileAddress,
+      fileStatementAccount,
+    }
+  ) {
+    try {
+      const user = await userModel.findById(userId);
+
+      if (user === null) {
+        throw new Error("El usuario no existe.");
+      }
+
+      if (fileProfilePicture) {
+        const { filename, path } = fileProfilePicture[0];
+        user.documents.push({ name: filename, reference: path });
+      }
+
+      if (fileProductPicture) {
+        const { filename, path } = fileProductPicture[0];
+        user.documents.push({ name: filename, reference: path });
+      }
+
+      if (fileIdentification) {
+        const { filename, path } = fileIdentification[0];
+        user.documents.push({ name: filename, reference: path });
+      }
+
+      if (fileAddress) {
+        const { filename, path } = fileAddress[0];
+        user.documents.push({ name: filename, reference: path });
+      }
+
+      if (fileStatementAccount) {
+        const { filename, path } = fileStatementAccount[0];
+        user.documents.push({ name: filename, reference: path });
+      }
+
+      user.statusDocuments =
+        !!fileIdentification && !!fileAddress && !!fileStatementAccount;
+
+      const userUpdated = await user.save();
+
+      return userUpdated;
     } catch (error) {
       throw new Error(error);
     }

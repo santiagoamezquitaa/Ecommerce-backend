@@ -26,4 +26,8 @@ export default class UsersService {
   putOneUserRole = (userId) => {
     return this.dao.putUserRole(userId);
   };
+
+  postAllDocumentsUser = (userId, files) => {
+    return this.dao.postDocumentsUser(userId, files);
+  };
 }

@@ -16,8 +16,8 @@ const initializePassport = () => {
       async (req, username, password, done) => {
         const { firstName, lastName, email, age, cart } = req.body;
         try {
-          if(!firstName || !lastName || !email || !age) {
-            return done("Faltan campos", false)
+          if (!firstName || !lastName || !email || !age) {
+            return done("Faltan campos", false);
           }
           const user = await userModel.findOne({ email: username });
           if (user) {
@@ -56,6 +56,11 @@ const initializePassport = () => {
           if (!isValidPassword(user, password)) {
             return done(null, false);
           }
+
+          const userLastConnection = await userModel.findOneAndUpdate(
+            { email: username },
+            { lastConnection: new Date() }
+          );
           return done(null, user);
         } catch (error) {
           return done(error);

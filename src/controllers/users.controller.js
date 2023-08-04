@@ -19,6 +19,7 @@ const loginUser = async (req, res) => {
   }
 
   req.session.user = {
+    id: req.user._id,
     name: `${req.user.firstName} ${req.user.lastName}`,
     email: req.user.email,
     age: req.user.age,
@@ -98,6 +99,27 @@ const githubCallback = async (req, res) => {
   res.redirect("/products");
 };
 
+const postDocuments = async (req, res) => {
+  try {
+    if (!req.files) {
+      return res
+        .status(400)
+        .send({ status: "error", error: "No se pudo guardar los documentos" });
+    }
+
+    const postDocumentResponse = await userService.postAllDocumentsUser(
+      req.session.user.id,
+      req.files
+    );
+
+    res
+      .status(200)
+      .send({ status: "success", payload: postDocumentResponse.documents });
+  } catch (error) {
+    return res.status(400).send({ status: "error", error: error.message });
+  }
+};
+
 const github = async (req, res) => {};
 
 export default {
@@ -111,4 +133,5 @@ export default {
   putUserByEmail,
   getUserByEmail,
   putUsersRole,
+  postDocuments,
 };

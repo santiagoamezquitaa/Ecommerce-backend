@@ -144,6 +144,14 @@ const getViewResetPassword = (req, res) => {
   });
 };
 
+const getViewChangeRole = (req, res) => {
+  res.render("changeRole", {
+    userId: req.session.user.id,
+    userRole: req.session.user.role,
+    title: "Change Role",
+  });
+};
+
 export default {
   getViewAllProducts,
   getViewRealtimeProducts,
@@ -156,4 +164,5 @@ export default {
   getViewLogout,
   getViewForgotPassword,
   getViewResetPassword,
+  getViewChangeRole,
 };

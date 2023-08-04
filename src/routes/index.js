@@ -9,6 +9,7 @@ import MockingRouter from "./mocking.router.js";
 import LoggersRouter from "./loggers.router.js";
 import MailsRouter from "./mails.router.js";
 import TokensRouter from "./tokens.router.js";
+import UsersRouter from "./users.router.js";
 
 const router = Router();
 
@@ -19,6 +20,7 @@ const chatRouter = new ChatRouter();
 const sessionsRouter = new SessionsRouter();
 const ticketsRouter = new TicketsRouter();
 const tokensRouter = new TokensRouter();
+const usersRouter = new UsersRouter();
 const mockingRouter = new MockingRouter();
 const loggerRouter = new LoggersRouter();
 const mailRouter = new MailsRouter();
@@ -30,6 +32,7 @@ router.use("/api/sessions", sessionsRouter.getRouter());
 router.use("/api/products", productsRouter.getRouter());
 router.use("/api/tickets", ticketsRouter.getRouter());
 router.use("/api/tokens", tokensRouter.getRouter());
+router.use("/api/users", usersRouter.getRouter());
 router.use("/", mockingRouter.getRouter());
 router.use("/", loggerRouter.getRouter());
 router.use("/", mailRouter.getRouter());

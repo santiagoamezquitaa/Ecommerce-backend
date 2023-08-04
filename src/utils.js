@@ -2,6 +2,7 @@ import { fileURLToPath } from "url";
 import { dirname } from "path";
 import bcrypt from "bcrypt";
 import { faker } from "@faker-js/faker/locale/es";
+import multer from "multer";
 
 export const createhash = (password) =>
   bcrypt.hashSync(password, bcrypt.genSaltSync(10));
@@ -29,4 +30,33 @@ export const generateProducts = () => {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+function determinarCarpetaDeDestino(req, file, cb) {
+  let carpetaDestino = `${__dirname}/uploads`;
+
+  if (file.fieldname === "fileProfilePicture") {
+    carpetaDestino += "/profiles";
+  } else if (file.fieldname === "fileProductPicture") {
+    carpetaDestino += "/products";
+  } else if (
+    file.fieldname === "fileIdentification" ||
+    file.fieldname === "fileAddress" ||
+    file.fieldname === "fileStatementAccount"
+  ) {
+    carpetaDestino += "/documents";
+  } else {
+    return cb(new Error("Tipo de archivo no válido"));
+  }
+
+  cb(null, carpetaDestino);
+}
+
+const storage = multer.diskStorage({
+  destination: determinarCarpetaDeDestino,
+  filename: function (req, file, cb) {
+    const newNameFile = `${req.session.user.id}-${file.originalname}`;
+    cb(null, newNameFile);
+  },
+});
+
+export const uploader = multer({ storage });
 export default __dirname;

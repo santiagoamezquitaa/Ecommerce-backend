@@ -2,10 +2,18 @@ const actualPage = document.currentScript.getAttribute("data-actualPage");
 let hasPrevPage = document.currentScript.getAttribute("data-hasPrevPage");
 let hasNextPage = document.currentScript.getAttribute("data-hasNextPage");
 const cartId = document.currentScript.getAttribute("data-userCartId");
+const userId = document.currentScript.getAttribute("data-userId");
 
 const prevPageButton = document.getElementById("prevPageButton");
 const nextPageButton = document.getElementById("nextPageButton");
 const addToCartButton = document.querySelectorAll(".addToCartButton");
+const convertUserRoleButton = document.getElementById("convertUserRole");
+
+const userRole = convertUserRoleButton.getAttribute("data-userRole");
+
+convertUserRoleButton.addEventListener("click", async () => {
+  window.location.replace("/changeuserrole");
+});
 
 hasPrevPage = hasPrevPage === "true";
 hasNextPage = hasNextPage === "true";

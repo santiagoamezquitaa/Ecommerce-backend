@@ -1,0 +1,45 @@
+<h1>¿Deseas cambiar tu rol? Ten en cuenta lo siguiente:</h1>
+
+<div id="container-formFiles">
+    <p>Tu rol al ser User, requiere tener una documentación adicional para ser ascendidio a User_premium. Recuerda subir
+        todos los archivos de documentación siempre, para poder ser usuario premium.</p>
+    <br>
+    <hr>
+    <form id="formFiles" enctype="multipart/form-data">
+        <label for="fileProfilePicture">Imagen de perfil:</label>
+        <input type="file" name="fileProfilePicture"><br>
+
+        <label for="fileProductPicture">Imagen del producto:</label>
+        <input type="file" name="fileProductPicture"><br>
+
+        <h3>Documentación: </h3>
+
+        <label for="fileIdentification">Identificación:</label>
+        <input type="file" name="fileIdentification"><br>
+
+        <label for="fileAddress">Comprobante de domicilio:</label>
+        <input type="file" name="fileAddress"><br>
+
+        <label for="fileStatementAccount">Comprobante de estado de cuenta:</label>
+        <input type="file" name="fileStatementAccount"><br>
+    </form>
+
+    <p id="status" style="color: red;"></p>
+    <br>
+</div>
+
+<div id="container-text">
+    <p>Tu rol al ser User_premium, no requiere información adicional, sin embargo, cuando quieras volver a ser
+        User_premium tendrás que volver a proporcionar la respectiva documentación. Quieres continuar?</p>
+</div>
+
+<p>Una vez efectuado el cambio tendrás que iniciar sesión nuevamente.</p>
+
+<hr>
+
+<button id="changeRoleButton">Cambiar rol</button>
+
+<p id="statusPut" style="color: red;"></p>
+
+
+<script src="/js/changeRole.js" data-userId="{{userId}}" data-userRole="{{userRole}}"></script>

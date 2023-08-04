@@ -7,6 +7,10 @@
     <p><strong>Años:</strong> {{user.age}}</p>
     <p><strong>Rol de usuario:</strong> {{user.role}}</p>
 
+    <h3>¿Deseas cambiar tu rol de perfil? Da click ;)</h3>
+
+    <button id="convertUserRole" data-userRole="{{user.role}}"> Cambiar Rol!</button><br><br>
+
     <button id="buyNow">Comprar Ahora!</button>
 
     <button id="logout">Cerrar sesión</button>
@@ -64,4 +68,4 @@
 {{/if}}
 
 <script src="/js/products.js" data-actualPage="{{actualPage}}" data-hasPrevPage={{hasPrevPage}}
-    data-hasNextPage={{hasNextPage}} data-userCartId="{{user.cartId}}"></script>
+    data-hasNextPage={{hasNextPage}} data-userCartId="{{user.cartId}}" data-userId="{{user.id}}"></script>

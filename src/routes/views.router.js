@@ -52,5 +52,11 @@ export default class ViewsRouter extends BaseRouter {
       ["PUBLIC"],
       viewsController.getViewResetPassword
     );
+
+    this.get(
+      "/changeuserrole",
+      ["USER", "USER_PREMIUM"],
+      viewsController.getViewChangeRole
+    );
   }
 }
