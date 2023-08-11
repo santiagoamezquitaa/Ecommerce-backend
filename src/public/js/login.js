@@ -31,7 +31,7 @@ document
   });
 
 document.getElementById("redirectSingUp").addEventListener("click", (event) => {
-  window.location.replace("/api/sessions/register");
+  window.location.replace("/register");
 });
 
 document.getElementById("loginGithub").addEventListener("click", (event) => {
