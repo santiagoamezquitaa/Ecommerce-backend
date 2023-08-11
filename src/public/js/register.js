@@ -9,7 +9,7 @@ document
     const inputAge = document.getElementById("age").value;
     const inputPassword = document.getElementById("password").value;
 
-    const cartId = await fetch("http://localhost:8080/api/carts", {
+    const cartId = await fetch(`/api/carts`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -27,16 +27,13 @@ document
       cart: cart.message._id,
     };
 
-    const response = await fetch(
-      "http://localhost:8080/api/sessions/register",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newUser),
-      }
-    );
+    const response = await fetch(`/api/sessions/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newUser),
+    });
 
     document.getElementById("formRegister").reset();
 

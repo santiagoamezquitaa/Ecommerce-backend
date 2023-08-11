@@ -1,8 +1,10 @@
+import config from "../config/config.js";
 import socketServer from "../app.js";
 import { productsService } from "../services/index.js";
 import CustomError from "../utils.errors/custom.errors.js";
 import enumErrors from "../utils.errors/enum.errors.js";
 import generateProductErrorInfo from "../utils.errors/info.errors.js";
+import mailController from "./mail.controller.js";
 
 const getProducts = async (req, res) => {
   try {
@@ -36,11 +38,11 @@ const getProducts = async (req, res) => {
       prevLink:
         products.prevPage === null
           ? null
-          : `http://localhost:8080/api/products?page=${products.page - 1}`,
+          : `${config.baseUrl}/api/products?page=${products.page - 1}`,
       nextLink:
         products.nextPage === null
           ? null
-          : `http://localhost:8080/api/products?page=${products.page + 1}`,
+          : `${config.baseUrl}/api/products?page=${products.page + 1}`,
     });
   } catch (error) {
     return res.status(500).send({ status: "error", error: error.message });
@@ -157,6 +159,10 @@ const deleteProduct = async (req, res) => {
       loggedUserEmail,
       loggedUserRole
     );
+
+    if (deleteProductResponse[2] !== "Admin") {
+      mailController.mailDeleteProduct(deleteProductResponse[2]);
+    }
     socketServer.emit("productDeleted", deleteProductResponse[1]);
     return res
       .status(200)

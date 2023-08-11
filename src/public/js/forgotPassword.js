@@ -5,12 +5,9 @@ document
 
     const inputEmail = document.getElementById("email").value;
 
-    const responseFindEmail = await fetch(
-      `http://localhost:8080/api/sessions/${inputEmail}`,
-      {
-        method: "GET",
-      }
-    );
+    const responseFindEmail = await fetch(`/api/sessions/${inputEmail}`, {
+      method: "GET",
+    });
 
     const emailData = await responseFindEmail.json();
 
@@ -19,20 +16,17 @@ document
         "El email no existe en nuestros registros");
     }
 
-    const responseGenerateToken = await fetch(
-      `http://localhost:8080/api/tokens`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const responseGenerateToken = await fetch(`/api/tokens`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
     const token = await responseGenerateToken.json();
 
     const response = await fetch(
-      `http://localhost:8080/mailResetPassword/${inputEmail}/${token.token}`,
+      `/mailResetPassword/${inputEmail}/${token.token}`,
       {
         method: "GET",
       }

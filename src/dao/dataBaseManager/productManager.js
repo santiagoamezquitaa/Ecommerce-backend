@@ -88,7 +88,11 @@ export class ProductManager {
       ) {
         const productDeleted = await productModel.deleteOne({ _id: productId });
         if (productDeleted.deletedCount !== 0) {
-          return ["Producto eliminado satisfactoriamente", productId];
+          return [
+            "Producto eliminado satisfactoriamente",
+            productId,
+            product.owner,
+          ];
         } else {
           throw new Error(this.notFoundMessage);
         }

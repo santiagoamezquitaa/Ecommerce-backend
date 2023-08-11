@@ -58,5 +58,13 @@ export default class ViewsRouter extends BaseRouter {
       ["USER", "USER_PREMIUM"],
       viewsController.getViewChangeRole
     );
+
+    this.get("/adminview", ["ADMIN"], viewsController.getViewAdmin);
+
+    this.get(
+      "/finalizepurchase",
+      ["USER", "USER_PREMIUM"],
+      viewsController.getFinalizePurchase
+    );
   }
 }

@@ -11,7 +11,7 @@ document
       password: inputPassword,
     };
 
-    const response = await fetch("http://localhost:8080/api/sessions/login", {
+    const response = await fetch(`/api/sessions/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -30,6 +30,10 @@ document
     }
   });
 
-document.getElementById("redirectSingUp").addEventListener("click", (event) => {
-  window.location.replace("/register");
+document.getElementById("loginGithub").addEventListener("click", (event) => {
+  window.location.replace("/api/sessions/github");
+});
+
+document.getElementById("forgotPassword").addEventListener("click", (event) => {
+  window.location.replace("/forgotpassword");
 });

@@ -18,5 +18,11 @@ export default class UsersRouter extends BaseRouter {
       ]),
       usersController.postDocuments
     );
+
+    this.get("/", ["PUBLIC"], usersController.getUsers);
+
+    this.delete("/", ["PUBLIC"], usersController.deleteManyUsers);
+
+    this.delete("/:uid", ["PUBLIC"], usersController.deleteUser);
   }
 }

@@ -1,0 +1,61 @@
+<h1>FINALICEMOS TU COMPRA! :D</h1>
+
+<h2>Tu carrito:</h2>
+
+{{#if cart.length}}
+<div id="container">
+    <hr>
+    {{#each cart}}
+    <div class="productList">
+        <h3>Producto número: {{@index}}</h3>
+        <p>
+            <strong>Id del producto: </strong> {{product._id}} <br>
+            <strong>Nombre del producto: </strong>{{product.title}} <br>
+            <strong>Descripcion: </strong>{{product.description}}<br>
+            <strong>Precio: </strong>{{product.price}} <br>
+            <strong>Número de existencias: </strong>{{product.stock}} <br>
+        </p>
+        <p>
+            <strong>Cantidad a comprar: </strong>{{quantity}} <br>
+        </p>
+    </div>
+    <br>
+    <hr>
+    {{/each}}
+</div>
+{{/if}}
+
+<p>Para finalizar la compra da click a continuación.</p>
+<button id="buyNow">Finalizar compra!</button>
+
+<div id="container_resume_purchase">
+    <hr>
+    <h2>Compra realizada!</h2>
+    <div id="purchase">
+        <strong>Productos procesados:</strong><br>
+        <i>Los productos procesados son los cuales npudieron ser incluidos en la compra. Se muestra por su Id:</i>
+        <p id="processedProducts"></p>
+        <strong>Productos no procesados:</strong><br>
+        <i>Los productos no procesados son los cuales no pudieron ser incluidos en la compra debido a que no poseen el
+            sotck suficiente para la cantidad solicitada. Los dejamos en tu carrito para en un futuro! Se muestran a
+            continaución por su Id:</i>
+        <p id="unprocessedProducts"></p>
+    </div>
+    <div id="ticket">
+        <strong>Código del ticket:</strong>
+        <p id="codePurchase"></p>
+        <strong>Fecha de compra:</strong>
+        <p id="datePurchase"></p>
+        <strong>Total pagado:</strong>
+        <p id="totalAmount"></p>
+        <strong>Comprador:</strong>
+        <p id="purchaser"></p>
+    </div>
+</div>
+<br>
+<br>
+
+<button id="back">Volver a los productos</button>
+
+
+<script src="/js/finalizePurchase.js" data-cartId="{{cartId}}"></script>

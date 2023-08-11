@@ -2,7 +2,7 @@ const token = document.currentScript.getAttribute("data-token");
 const email = document.currentScript.getAttribute("data-email");
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const response = await fetch(`http://localhost:8080/api/tokens/${token}`, {
+  const response = await fetch(`/api/tokens/${token}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -26,16 +26,13 @@ document
       password: inputPassword,
     };
 
-    const responseFindByEmail = await fetch(
-      `http://localhost:8080/api/sessions/${email}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newData),
-      }
-    );
+    const responseFindByEmail = await fetch(`/api/sessions/${email}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newData),
+    });
 
     const responseFindByEmailData = await responseFindByEmail.json();
     if (responseFindByEmailData.status === "success") {

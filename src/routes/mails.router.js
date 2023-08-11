@@ -8,5 +8,11 @@ export default class MailsRouter extends BaseRouter {
       ["PUBLIC"],
       mailController.getMailResetPassword
     );
+
+    this.post(
+      "/mailDeletedAccount",
+      ["PUBLIC"],
+      mailController.postMailDeleteAccount
+    );
   }
 }

@@ -70,14 +70,14 @@ app.use(errorHandler);
 socketServer.on("connection", (socket) => {
   logger.info("Nuevo cliente conectado");
   socket.on("message", async (data) => {
-    await fetch("http://localhost:8080/api/messages", {
+    await fetch(`${config.baseUrl}/api/messages`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     });
-    let messagesLogs = await fetch("http://localhost:8080/api/messages", {
+    let messagesLogs = await fetch(`${config.baseUrl}/api/messages`, {
       method: "GET",
     });
     socketServer.emit("messagesLogs", await messagesLogs.json());

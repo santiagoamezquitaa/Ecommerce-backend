@@ -18,7 +18,8 @@ export class CartManager {
     try {
       const cartFound = await cartModel
         .findById(cartId)
-        .populate("products.product");
+        .populate("products.product")
+        .lean();
       if (cartFound !== null) {
         return cartFound.products;
       } else {
@@ -229,12 +230,12 @@ export class CartManager {
 
   async deleteCart(cartId) {
     try {
-        const cartDeleted = await cartModel.deleteOne({ _id: cartId });
-        if (cartDeleted.deletedCount !== 0) {
-          return cartDeleted;
-        } else {
-          throw new Error("El carrito no existe.");
-        }
+      const cartDeleted = await cartModel.deleteOne({ _id: cartId });
+      if (cartDeleted.deletedCount !== 0) {
+        return cartDeleted;
+      } else {
+        throw new Error("El carrito no existe.");
+      }
     } catch (error) {
       throw new Error(error);
     }

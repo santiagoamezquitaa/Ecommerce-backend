@@ -5,8 +5,9 @@
   "description": "",
   "main": "productManager.js",
   "scripts": {
+    "start": "node src/app.js",
     "test": "mocha test/products.test.js",
-    "start": "nodemon ./src/app.js"
+    "dev": "nodemon ./src/app.js"
   },
   "keywords": [],
   "author": "",

@@ -1,5 +1,6 @@
 import { cartsService, ticketService } from "../services/index.js";
 import { productsService } from "../services/index.js";
+import { userService } from "../services/index.js";
 
 const getViewAllProducts = async (req, res) => {
   const limit = parseInt(req.query.limit) || 10;
@@ -152,6 +153,26 @@ const getViewChangeRole = (req, res) => {
   });
 };
 
+const getViewAdmin = async (req, res) => {
+  const users = await userService.getAllUsers();
+
+  res.render("adminView", {
+    users,
+    title: "Administrator View",
+  });
+};
+
+const getFinalizePurchase = async (req, res) => {
+  const cartId = req.session.user.cartId;
+  const cart = await cartsService.getAllProductsFromCart(cartId);
+
+  res.render("finalizePurchase", {
+    cart,
+    cartId,
+    title: "Finalize Purchase",
+  });
+};
+
 export default {
   getViewAllProducts,
   getViewRealtimeProducts,
@@ -165,4 +186,6 @@ export default {
   getViewForgotPassword,
   getViewResetPassword,
   getViewChangeRole,
+  getViewAdmin,
+  getFinalizePurchase,
 };

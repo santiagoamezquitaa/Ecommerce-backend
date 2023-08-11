@@ -1,0 +1,71 @@
+<h1>BIENVENIDO A LA ADMINISTRACIÓN DE USUARIOS</h1>
+
+<hr>
+<h2>Eliminar un usuario:</h2>
+<p>Al presionar el botón también se eliminarán los usuarios que tengan un preiodo de inactividad mayor de 2 días.</p>
+
+<form id="formDeleteUser">
+    <label for="idDelete">Id del usuario a eliminar (opcional):</label>
+    <input type="text" , id="idDelete" , name="idDelete"><br>
+
+    <input type="submit" value="Eliminar usuario(s)">
+</form>
+<br>
+
+<hr>
+
+<h2>Cambiar de rol un usuario:</h2>
+<p>Para cambiar de rol se requiere tener una documentación adicional para ser ascendidio a User_premium. Recuerda subir
+    todos los archivos de documentación siempre, para poder ser usuario premium.</p>
+
+<p>Si es un cambio de rol de User_premium a User, no es necesario subir nuevamente la documentación</p>
+
+<label for="userEmail">Email del usuario:</label>
+<input type="text" , id="userEmail" , name="userEmail"><br>
+
+<form id="formFiles" enctype="multipart/form-data">
+
+    <h3>Documentación: </h3>
+
+    <label for="fileIdentification">Identificación:</label>
+    <input type="file" name="fileIdentification"><br>
+
+    <label for="fileAddress">Comprobante de domicilio:</label>
+    <input type="file" name="fileAddress"><br>
+
+    <label for="fileStatementAccount">Comprobante de estado de cuenta:</label>
+    <input type="file" name="fileStatementAccount"><br>
+</form>
+
+<button id="changeRoleButton">Cambiar rol</button>
+
+<p id="statusPut" style="color: red;"></p>
+<br>
+
+<hr>
+
+<br>
+<h2>Lista de usuarios:</h2>
+
+{{#if users.length}}
+<div id="container">
+    <hr>
+    {{#each users}}
+    <div class="userList">
+        <h3>Usuario número: {{@index}}</h3>
+        <p>
+            <strong>Id del usuario: </strong>{{_id}} <br>
+            <strong>Nombre completo: </strong>{{firstName}} {{lastName}} <br>
+            <strong>Email: </strong>{{email}} <br>
+            <strong>Rol: </strong>{{role}} <br>
+            <strong>Carrito: </strong>{{cart}} <br>
+            <strong>Estatus de documentos: </strong>{{statusDocuments}} <br>
+        </p>
+    </div>
+    <br>
+    <hr>
+    {{/each}}
+</div>
+{{/if}}
+
+<script src="/js/adminView.js"></script>

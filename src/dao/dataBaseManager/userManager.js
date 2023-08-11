@@ -89,6 +89,7 @@ export class UserManager {
       if (userFounded === null) {
         throw new Error("El correo no existe");
       }
+      return userFounded;
     } catch (error) {
       throw new Error(error);
     }
@@ -193,6 +194,58 @@ export class UserManager {
       const userUpdated = await user.save();
 
       return userUpdated;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async getUsers() {
+    try {
+      const users = await userModel.find().lean();
+      if (users === null) {
+        throw new Error("No existen usuarios");
+      }
+      return users;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async deleteManyUsers() {
+    try {
+      const twoDaysAgo = new Date();
+      twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+
+      const usersToDelete = await userModel.find({
+        lastConnection: { $lt: twoDaysAgo },
+      });
+
+      const usersDeleted = await userModel.deleteMany({
+        lastConnection: { $lt: twoDaysAgo },
+      });
+
+      if (usersDeleted.deletedCount === 0) {
+        return "No se elimino ningún usuario. Nadie tiene un tiempo de desconexión mayor a 2 días";
+      }
+
+      const emailsToDelete = usersToDelete.map((user) => user.email);
+
+      usersDeleted.userEmails = emailsToDelete;
+
+      return usersDeleted;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async deleteUser(userId) {
+    try {
+      const userDeleted = await userModel.deleteOne({ _id: userId });
+      if (userDeleted.deletedCount === 0) {
+        throw new Error("El usuario no existe");
+      } else {
+        return userDeleted;
+      }
     } catch (error) {
       throw new Error(error);
     }

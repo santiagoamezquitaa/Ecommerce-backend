@@ -107,8 +107,10 @@ const postDocuments = async (req, res) => {
         .send({ status: "error", error: "No se pudo guardar los documentos" });
     }
 
+    const userId = req.params.uid;
+
     const postDocumentResponse = await userService.postAllDocumentsUser(
-      req.session.user.id,
+      userId,
       req.files
     );
 
@@ -120,7 +122,43 @@ const postDocuments = async (req, res) => {
   }
 };
 
-const github = async (req, res) => {};
+const getUsers = async (req, res) => {
+  try {
+    const getAllUsersResponse = await userService.getAllUsers();
+    const dtoResponse = getAllUsersResponse.map(
+      (user) => new CurrentUserDTO(user)
+    );
+
+    res.status(200).send({ status: "success", payload: dtoResponse });
+  } catch (error) {
+    return res.status(400).send({ status: "error", error: error.message });
+  }
+};
+
+const deleteManyUsers = async (req, res) => {
+  try {
+    const deleteUsersResponse = await userService.deleteUsers();
+
+    res.status(200).send({ status: "success", payload: deleteUsersResponse });
+  } catch (error) {
+    return res.status(400).send({ status: "error", error: error.message });
+  }
+};
+
+const deleteUser = async (req, res) => {
+  try {
+    const userId = req.params.uid;
+    const deleteUserResponse = await userService.deleteOneUser(userId);
+
+    res.status(200).send({ status: "success", payload: deleteUserResponse });
+  } catch (error) {
+    return res.status(400).send({ status: "error", error: error.message });
+  }
+};
+
+const github = async (req, res) => {
+  return res.status(400).send({ status: "error", error: error.message });
+};
 
 export default {
   registerUser,
@@ -134,4 +172,7 @@ export default {
   getUserByEmail,
   putUsersRole,
   postDocuments,
+  getUsers,
+  deleteManyUsers,
+  deleteUser,
 };

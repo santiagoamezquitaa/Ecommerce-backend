@@ -30,4 +30,16 @@ export default class UsersService {
   postAllDocumentsUser = (userId, files) => {
     return this.dao.postDocumentsUser(userId, files);
   };
+
+  getAllUsers = () => {
+    return this.dao.getUsers();
+  };
+
+  deleteUsers = () => {
+    return this.dao.deleteManyUsers();
+  };
+
+  deleteOneUser = (userId) => {
+    return this.dao.deleteUser(userId);
+  };
 }

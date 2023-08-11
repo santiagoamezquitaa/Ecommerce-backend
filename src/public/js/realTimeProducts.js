@@ -80,7 +80,7 @@ document
       status: inputStatus,
     };
 
-    await fetch("http://localhost:8080/api/products", {
+    await fetch(`/api/products`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -98,7 +98,7 @@ document
 
     const inputIdDelete = document.getElementById("idDelete").value;
 
-    await fetch(`http://localhost:8080/api/products/${inputIdDelete}`, {
+    await fetch(`/api/products/${inputIdDelete}`, {
       method: "DELETE",
     });
 

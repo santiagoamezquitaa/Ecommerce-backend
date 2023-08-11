@@ -19,7 +19,7 @@ const createTicket = async (req, res) => {
       purchaser,
     };
     const ticketCreated = await ticketService.createOneTicket(buyerUserData);
-    return res.status(200).send(ticketCreated);
+    return res.status(200).send({ status: "success", message: ticketCreated });
   } catch (error) {
     return res.status(400).send({ status: "error", error: error.message });
   }

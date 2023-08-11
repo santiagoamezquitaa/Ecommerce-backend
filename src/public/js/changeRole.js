@@ -18,13 +18,10 @@ changeRoleButton.addEventListener("click", async () => {
   if (userRole === "User") {
     const formData = new FormData(formFiles);
 
-    const postDocuments = await fetch(
-      `http://localhost:8080/api/users/${userId}/documents`,
-      {
-        method: "POST",
-        body: formData,
-      }
-    );
+    const postDocuments = await fetch(`/api/users/${userId}/documents`, {
+      method: "POST",
+      body: formData,
+    });
 
     responsePostDocuments = await postDocuments.json();
 
@@ -34,15 +31,12 @@ changeRoleButton.addEventListener("click", async () => {
     }
   }
 
-  const putRole = await fetch(
-    `http://localhost:8080/api/users/premium/${userId}`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
+  const putRole = await fetch(`/api/users/premium/${userId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
   const responsePutRole = await putRole.json();
 

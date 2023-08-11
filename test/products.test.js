@@ -3,7 +3,7 @@ import config from "../src/config/config.js";
 import chai from "chai";
 
 const expect = chai.expect;
-const requester = supertest(`http://localhost:${config.port}`);
+const requester = supertest(`${config.baseUrl}`);
 
 describe("Testing Ecommerce", () => {
   describe("Test de productos", () => {
@@ -125,7 +125,7 @@ describe("Testing Ecommerce", () => {
         .send(loginUser);
 
       expect(_body).to.be.ok;
-      expect(_body.payload).to.have.property("_id")
+      expect(_body.payload).to.have.property("_id");
     });
   });
 });
